@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPC Compare</title>
+<style>
+  
+  :root {
+    --bg: #12161c;
+    --panel-bg: #1a1f28;
+    --border: #2a323f;
+    --text: #d7dce2;
+    --text-muted: #8a94a3;
+    --accent-amber: #d99b3f;
+    --accent-amber-bg: #3a2f1a;
+    --hatch-color: #4a4238;
+    --link: #6fb3ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 1.5rem 3rem;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.4;
+  }
+  h1, h2, h3 { font-weight: 600; }
+  a { color: var(--link); }
+
+  .masthead { padding: 1.25rem 0 1rem; border-bottom: 1px solid var(--border); }
+  .masthead h1 { margin: 0 0 0.4rem; font-size: 1.5rem; }
+  .disclaimer { color: var(--text-muted); font-size: 0.85rem; margin: 0.25rem 0 0.9rem; }
+  .top-links { color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.4rem; }
+
+  
+  .compare-window { margin: 1.25rem 0; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .compare-window:first-of-type { border-top: none; padding-top: 0; }
+  .window-title { font-size: 1.05rem; margin: 0 0 0.6rem; }
+
+  .opacity-control { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: var(--text-muted); margin: 0 0 0.6rem; }
+  .opacity-control input[type="range"] { width: 180px; }
+  .calibration-note { font-size: 0.78rem; color: var(--accent-amber); margin: 0 0 0.6rem; }
+  .calibration-note[hidden] { display: none; }
+
+  
+  .panel-controls { display: flex; flex-direction: row; align-items: center; gap: 0.4rem; margin: 0 0 0.5rem; }
+  .panel-controls select {
+    background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.35rem 0.5rem; font-size: 0.85rem;
+  }
+  .panel-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; min-width: 1.1rem; }
+
+  .compare-viewport.empty::after { content: "No image selected"; color: var(--text-muted); font-size: 0.85rem; }
+  .compare-viewport.empty { display: flex; align-items: center; justify-content: center; }
+  
+  .compare-media { position: absolute; display: block; max-width: none; }
+  .compare-media[hidden] { display: none; }
+
+  
+  .frame-scrub-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-muted); margin: 0 0 0.5rem 1.5rem; }
+  .frame-scrub-row[hidden] { display: none; }
+  .frame-scrub-row input[type="range"] { flex: 1 1 auto; max-width: 260px; }
+  .frame-scrub-value { min-width: 3.5rem; text-align: right; }
+  .frame-scrub-play {
+    background: var(--panel-bg); color: var(--text); border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.25rem 0.6rem; font-size: 0.78rem; cursor: pointer;
+  }
+
+  
+  .compare-stage { position: relative; width: 100%; max-width: 1330px; aspect-ratio: 1.571; }
+  .compare-viewport { position: absolute; inset: 0; margin: 0; overflow: hidden; background: #06080b; border: 1px solid var(--border); border-radius: 4px; }
+  .compare-viewport[data-panel="b"] { opacity: var(--overlay-opacity, 0.5); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <h1>OPC North Pacific &mdash; Compare</h1>
+  <p class="disclaimer">Not a reconstruction of its own &mdash; this page lets you freely pick any two (product, run, lead) combinations from what this build actually produced and blend them on top of each other. Two independent windows below, each its own comparison.</p>
+  <p class="top-links">The daily reconstructed gallery, 0&ndash;96h forecast leads from GFS/ECMWF: <a href="index.html">OPC North Pacific Surface Analysis &mdash; Reconstruction</a>.</p>
+  <p class="top-links">See how recent forecast runs compared to what actually happened: <a href="consistency.html">OPC North Pacific &mdash; Run Consistency</a>.</p>
+  <p class="top-links">Compare experimental front-detection tuning choices side by side: <a href="sensitivity.html">OPC Sensitivity Analysis</a>.</p>
+  <p class="top-links">A related project: <a href="https://fp-sea.github.io/alenuihaha_wx/" target="_blank" rel="noopener">Alenuihaha Marine Weather Briefing</a>.</p>
+</header>
+
+<main>
+  
+  
+<section class="compare-window" data-window="1">
+  <h2 class="window-title">Window 1</h2>
+  <div class="opacity-control">
+    <label for="opacitySlider-1">Panel B opacity</label>
+    <input type="range" id="opacitySlider-1" min="0" max="100" value="50">
+    <span id="opacityValue-1">50%</span>
+  </div>
+  
+  <div class="panel-controls">
+    <span class="panel-label">A</span>
+    <select class="product-select" data-window="1" data-panel="a"></select>
+    <select class="cycle-select" data-window="1" data-panel="a"></select>
+    <select class="lead-select" data-window="1" data-panel="a"></select>
+  </div>
+  
+  <div class="frame-scrub-row" id="scrubRow-1-a" hidden>
+    <span class="panel-label">A</span>
+    <label for="frameScrub-1-a">Frame</label>
+    <input type="range" class="frame-scrub" id="frameScrub-1-a" min="0" max="1" step="0.01" value="0">
+    <span class="frame-scrub-value" id="frameScrubValue-1-a">0 / 0</span>
+    <button type="button" class="frame-scrub-play" id="frameScrubPlay-1-a">Play</button>
+  </div>
+  
+  <div class="panel-controls">
+    <span class="panel-label">B</span>
+    <select class="product-select" data-window="1" data-panel="b"></select>
+    <select class="cycle-select" data-window="1" data-panel="b"></select>
+    <select class="lead-select" data-window="1" data-panel="b"></select>
+  </div>
+  
+  <div class="frame-scrub-row" id="scrubRow-1-b" hidden>
+    <span class="panel-label">B</span>
+    <label for="frameScrub-1-b">Frame</label>
+    <input type="range" class="frame-scrub" id="frameScrub-1-b" min="0" max="1" step="0.01" value="0">
+    <span class="frame-scrub-value" id="frameScrubValue-1-b">0 / 0</span>
+    <button type="button" class="frame-scrub-play" id="frameScrubPlay-1-b">Play</button>
+  </div>
+  
+  <p class="calibration-note" id="calibrationNote-1" hidden>&mdash; one of the selected images has no overlay alignment data; positions may not line up precisely.</p>
+  <div class="compare-stage" id="compareStage-1">
+    
+    
+    <div class="compare-viewport empty" data-panel="a" id="viewport-1-a">
+      <img class="compare-media" id="img-1-a" alt="">
+      <video class="compare-media" id="video-1-a" muted loop playsinline preload="metadata" hidden></video>
+    </div>
+    
+    
+    <div class="compare-viewport empty" data-panel="b" id="viewport-1-b">
+      <img class="compare-media" id="img-1-b" alt="">
+      <video class="compare-media" id="video-1-b" muted loop playsinline preload="metadata" hidden></video>
+    </div>
+    
+  </div>
+</section>
+  
+  
+<section class="compare-window" data-window="2">
+  <h2 class="window-title">Window 2</h2>
+  <div class="opacity-control">
+    <label for="opacitySlider-2">Panel B opacity</label>
+    <input type="range" id="opacitySlider-2" min="0" max="100" value="50">
+    <span id="opacityValue-2">50%</span>
+  </div>
+  
+  <div class="panel-controls">
+    <span class="panel-label">A</span>
+    <select class="product-select" data-window="2" data-panel="a"></select>
+    <select class="cycle-select" data-window="2" data-panel="a"></select>
+    <select class="lead-select" data-window="2" data-panel="a"></select>
+  </div>
+  
+  <div class="frame-scrub-row" id="scrubRow-2-a" hidden>
+    <span class="panel-label">A</span>
+    <label for="frameScrub-2-a">Frame</label>
+    <input type="range" class="frame-scrub" id="frameScrub-2-a" min="0" max="1" step="0.01" value="0">
+    <span class="frame-scrub-value" id="frameScrubValue-2-a">0 / 0</span>
+    <button type="button" class="frame-scrub-play" id="frameScrubPlay-2-a">Play</button>
+  </div>
+  
+  <div class="panel-controls">
+    <span class="panel-label">B</span>
+    <select class="product-select" data-window="2" data-panel="b"></select>
+    <select class="cycle-select" data-window="2" data-panel="b"></select>
+    <select class="lead-select" data-window="2" data-panel="b"></select>
+  </div>
+  
+  <div class="frame-scrub-row" id="scrubRow-2-b" hidden>
+    <span class="panel-label">B</span>
+    <label for="frameScrub-2-b">Frame</label>
+    <input type="range" class="frame-scrub" id="frameScrub-2-b" min="0" max="1" step="0.01" value="0">
+    <span class="frame-scrub-value" id="frameScrubValue-2-b">0 / 0</span>
+    <button type="button" class="frame-scrub-play" id="frameScrubPlay-2-b">Play</button>
+  </div>
+  
+  <p class="calibration-note" id="calibrationNote-2" hidden>&mdash; one of the selected images has no overlay alignment data; positions may not line up precisely.</p>
+  <div class="compare-stage" id="compareStage-2">
+    
+    
+    <div class="compare-viewport empty" data-panel="a" id="viewport-2-a">
+      <img class="compare-media" id="img-2-a" alt="">
+      <video class="compare-media" id="video-2-a" muted loop playsinline preload="metadata" hidden></video>
+    </div>
+    
+    
+    <div class="compare-viewport empty" data-panel="b" id="viewport-2-b">
+      <img class="compare-media" id="img-2-b" alt="">
+      <video class="compare-media" id="video-2-b" muted loop playsinline preload="metadata" hidden></video>
+    </div>
+    
+  </div>
+</section>
+</main>
+
+<script src="compare.js"></script>
+</body>
+</html>

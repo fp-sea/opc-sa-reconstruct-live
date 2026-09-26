@@ -1,0 +1,2801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPC SA Reconstruction &mdash; 2026-09-26 00:00 UTC</title>
+<style>
+  :root {
+    --bg: #12161c;
+    --panel-bg: #1a1f28;
+    --border: #2a323f;
+    --text: #d7dce2;
+    --text-muted: #8a94a3;
+    --accent-amber: #d99b3f;
+    --accent-amber-bg: #3a2f1a;
+    --hatch-color: #4a4238;
+    --link: #6fb3ff;
+    --leads: 0, 24, 48, 72, 96;
+    --row-header-width: 168px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 1.5rem 3rem;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.4;
+  }
+  h1, h2, h3 { font-weight: 600; }
+  a { color: var(--link); }
+
+  /* --- Masthead --- */
+  .masthead { padding: 1.25rem 0 1rem; border-bottom: 1px solid var(--border); }
+  .masthead h1 { margin: 0 0 0.4rem; font-size: 1.5rem; }
+  .disclaimer { color: var(--text-muted); font-size: 0.85rem; margin: 0.25rem 0 0.9rem; }
+  .update-schedule { color: var(--text-muted); font-size: 0.8rem; margin: 0 0 0.9rem; }
+  .top-links { color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.4rem; }
+  .time-table { border-collapse: collapse; font-size: 0.82rem; color: var(--text-muted); }
+  .time-table th, .time-table td { padding: 0.15rem 1rem 0.15rem 0; text-align: left; font-weight: 400; }
+  .time-table th { color: var(--text); font-weight: 600; }
+  .time-table td:first-child, .time-table th:first-child { padding-left: 0; font-weight: 600; color: var(--text); }
+
+  /* --- Toggle (pure CSS, checkbox hack) --- */
+  #ecmwfToggle { position: absolute; opacity: 0; pointer-events: none; }
+  .toggle-row { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; }
+  .toggle-label { display: inline-block; width: 40px; height: 22px; border-radius: 11px; background: #3a4250; position: relative; cursor: pointer; flex-shrink: 0; }
+  .toggle-label span { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #cfd6de; transition: transform 0.15s ease; }
+  /* .toggle-label is nested inside .toggle-row (inside header/details), not
+     a direct sibling of #ecmwfToggle -- the same general-sibling +
+     descendant pattern used for .ecmwf-row below is needed here too, not
+     the adjacent-sibling (+) combinator (which never matches at any
+     nesting depth). */
+  #ecmwfToggle:checked ~ * .toggle-label { background: var(--accent-amber); }
+  #ecmwfToggle:checked ~ * .toggle-label span { transform: translateX(18px); }
+  .toggle-text { font-size: 0.85rem; color: var(--text-muted); }
+  
+  .gallery-row.ecmwf-row { display: none; }
+  .ecmwf-note { display: inline; }
+  #ecmwfToggle:checked ~ * .gallery-row.ecmwf-row { display: flex; }
+  #ecmwfToggle:checked ~ * .ecmwf-note { display: none; }
+
+  /* --- Column header --- */
+  
+  
+  .column-header { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin: 0.5rem 0 0.25rem calc(var(--row-header-width) + 0.75rem + 0.9rem); font-size: 0.8rem; color: var(--text-muted); text-align: center; }
+
+  /* --- Rows / cells --- */
+  .product-block { border: 1px solid var(--border); border-radius: 6px; margin: 1rem 0; padding: 0.75rem 0.9rem; background: var(--panel-bg); }
+  
+  .gallery-row { display: flex; align-items: flex-start; gap: 0.75rem; position: relative; }
+  .gallery-row + .gallery-row { margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px dashed var(--border); }
+
+  
+  .row-pair { display: flex; gap: 0.75rem; }
+  .row-pair > .gallery-row { flex: 1 1 50%; min-width: 0; }
+  .row-pair > .gallery-row + .gallery-row { margin-top: 0; padding-top: 0; border-top: none; }
+
+  
+  .row-triple {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: "h1 h2 h3" "i1 i2 i3";
+    gap: 0.35rem 0.75rem;
+  }
+  .row-triple > .gallery-row { display: contents; }
+  .row-triple > .gallery-row:nth-of-type(1) > .row-header { grid-area: h1; }
+  .row-triple > .gallery-row:nth-of-type(1) > .satellite-cells { grid-area: i1; }
+  .row-triple > .gallery-row:nth-of-type(2) > .row-header { grid-area: h2; }
+  .row-triple > .gallery-row:nth-of-type(2) > .satellite-cells { grid-area: i2; }
+  .row-triple > .gallery-row:nth-of-type(3) > .row-header { grid-area: h3; }
+  .row-triple > .gallery-row:nth-of-type(3) > .satellite-cells { grid-area: i3; }
+
+  
+  @media (max-width: 720px) {
+    .row-pair { flex-direction: column; }
+    .row-pair > .gallery-row { flex: 1 1 auto; }
+    .row-triple {
+      grid-template-columns: 1fr;
+      grid-template-areas: "h1" "i1" "h2" "i2" "h3" "i3";
+    }
+  }
+  .row-toggle { position: absolute; opacity: 0; pointer-events: none; }
+  .row-toggle:not(:checked) ~ .row-cells,
+  .row-toggle:not(:checked) ~ .satellite-cells { display: none; }
+  
+  .row-toggle:not(:checked) ~ * .row-caption,
+  .row-toggle:not(:checked) ~ * .row-subtitle-links { display: none; }
+  .row-header { flex: 0 0 var(--row-header-width); min-width: 0; }
+  .row-header h3 { margin: 0 0 0.1rem; font-size: 0.85rem; line-height: 1.2; }
+  .row-header h3 a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--text-muted); }
+  .row-header h3 a:hover { color: var(--link); border-bottom-color: var(--link); }
+  .row-caption { margin: 0 0 0.2rem; font-size: 0.72rem; line-height: 1.25; color: var(--text-muted); }
+  .row-subtitle-links { margin: 0 0 0.2rem; font-size: 0.7rem; }
+  .row-subtitle-links a { color: var(--link); }
+  .row-hide-toggle { cursor: pointer; font-size: 0.66rem; color: var(--text-muted); user-select: none; }
+  .row-hide-toggle::before { content: "hide"; }
+  .row-toggle:not(:checked) ~ * .row-hide-toggle::before { content: "show"; }
+  .row-cells { flex: 1 1 auto; min-width: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+  .row-cells.leads-1 { grid-template-columns: 1fr; }
+
+  .cell-link { display: block; position: relative; cursor: pointer; }
+  .cell-img { width: 100%; display: block; border-radius: 3px; border: 1px solid var(--border); transition: opacity 0.1s ease, border-color 0.1s ease; }
+  .cell-link:hover .cell-img { opacity: 0.85; border-color: var(--link); }
+  .cell-video { width: 100%; display: block; border-radius: 3px; border: 1px solid var(--border); background: #000; }
+  .cell-badge { display: inline-block; margin-top: 0.25rem; font-size: 0.72rem; color: var(--accent-amber); background: var(--accent-amber-bg); padding: 0.1rem 0.4rem; border-radius: 3px; }
+
+  
+  .cell-gap {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    width: 100%; aspect-ratio: 1.57; min-height: 28px; padding: 0.15rem;
+    border-radius: 3px; border: 1px solid var(--border); color: var(--text-muted);
+    font-size: clamp(0.58rem, 2.6vw, 0.78rem); line-height: 1.15; overflow: hidden;
+  }
+  
+  .cell-gap span { min-width: 0; overflow-wrap: anywhere; }
+  .cell-gap-suspended { background: repeating-linear-gradient(45deg, var(--panel-bg), var(--panel-bg) 8px, var(--hatch-color) 8px, var(--hatch-color) 9px); }
+  .cell-gap-neutral { background: var(--panel-bg); }
+
+  /* --- Satellite (full width, outside the 5-col grid) --- */
+  .satellite-cells { flex: 1 1 auto; min-width: 0; }
+  .satellite-cells img { width: 100%; border-radius: 3px; border: 1px solid var(--border); }
+
+  /* --- Diagnostics tier (always visible, no collapse) --- */
+  .diagnostics-tier { margin: 1.5rem 0; }
+  .diagnostics-intro { color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.75rem; }
+
+  /* --- Discussion --- */
+  .discussion { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .discussion-box { border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 0.9rem; background: var(--panel-bg); }
+  .discussion-box h3 { margin: 0 0 0.25rem; font-size: 0.95rem; }
+  .discussion-box h3 a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--text-muted); }
+  .discussion-box h3 a:hover { color: var(--link); border-bottom-color: var(--link); }
+  .discussion-box .box-caption { color: var(--text-muted); font-size: 0.8rem; margin: 0 0 0.5rem; }
+  .hsf-text { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; white-space: pre-wrap; max-height: 140px; overflow-y: auto; margin: 0; }
+  .generated-text { font-size: 0.85rem; color: var(--text-muted); max-height: 140px; overflow-y: auto; }
+
+  /* --- Learn more --- */
+  .learn-more { margin: 1.5rem 0 0; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); }
+
+  h2.tier-title { font-size: 1.1rem; margin: 1.5rem 0 0.25rem; }
+</style>
+</head>
+<body>
+<input type="checkbox" id="ecmwfToggle">
+
+<header class="masthead">
+  <h1>OPC North Pacific Surface Analysis &mdash; Reconstruction</h1>
+  <p class="disclaimer">RECONSTRUCTION &mdash; not an official OPC product. Derived from GFS/ECMWF via automated feature detection; carries irreducible uncertainty, especially at longer leads.</p>
+  <p class="update-schedule">Automatically rebuilt twice daily at 05:07 UTC (19:07 HST / 22:07 PDT, previous day) and 17:07 UTC (07:07 HST / 10:07 PDT) &mdash; see "Generated" below for exactly when this build actually ran.</p>
+  <p class="top-links">Freely pick any two products/runs/leads to compare side by side or overlaid: <a href="compare.html">OPC Compare</a>.</p>
+  <p class="top-links">See how recent forecast runs compared to what actually happened: <a href="consistency.html">OPC North Pacific &mdash; Run Consistency</a>.</p>
+  <p class="top-links">Compare experimental front-detection tuning choices side by side: <a href="sensitivity.html">OPC Sensitivity Analysis</a>.</p>
+  <p class="top-links">A related project: <a href="https://fp-sea.github.io/alenuihaha_wx/" target="_blank" rel="noopener">Alenuihaha Marine Weather Briefing</a>.</p>
+  <table class="time-table">
+    <tr><th></th><th>UTC</th><th>HST</th><th>Pacific</th></tr>
+    <tr><td>Valid (T=0)</td><td>2026-09-26 00:00 UTC</td><td>2026-09-25 14:00 HST</td><td>2026-09-25 17:00 PDT</td></tr>
+    <tr><td>Generated</td><td>2026-09-26 17:12 UTC</td><td>2026-09-26 07:12 HST</td><td>2026-09-26 10:12 PDT</td></tr>
+  </table>
+  <div class="toggle-row">
+    <label for="ecmwfToggle" class="toggle-label"><span></span></label>
+    <span class="toggle-text">Show ECMWF &amp; model differences</span>
+  </div>
+</header>
+
+<main>
+
+<h2 class="tier-title">Satellite &middot; Surface Analysis &middot; 500mb &middot; Wind/Wave &middot; Diagnostics</h2>
+
+
+
+
+  
+    
+    
+    <div class="product-block" id="block-satellite">
+    
+    
+  
+  
+  
+  
+  <div class="row-triple">
+    
+    <div class="gallery-row">
+      
+      <input type="checkbox" class="row-toggle" id="toggle-satellite_sfc" checked>
+      
+<div class="row-header">
+  
+  <h3>Satellite-Overlaid Surface Analysis</h3>
+  
+  <p class="row-caption">Satellite fused with SA — 0h only, no ladder.</p>
+  
+  <p class="row-subtitle-links">
+    <a href="https://ocean.weather.gov/Loops/index.php?category=pacific&amp;product=epacIRsfc&amp;days=2&amp;loop=0" target="_blank" rel="noopener">East Pacific</a> &middot; <a href="https://ocean.weather.gov/Loops/index.php?category=pacific&amp;product=wpacIRsfc&amp;days=2&amp;loop=0" target="_blank" rel="noopener">West Pacific</a>
+  </p>
+  
+  <label for="toggle-satellite_sfc" class="row-hide-toggle"></label>
+</div>
+      <div class="satellite-cells">
+        
+          
+          
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+        
+      </div>
+    </div>
+    
+    <div class="gallery-row">
+      
+      <input type="checkbox" class="row-toggle" id="toggle-satellite_loop" checked>
+      
+<div class="row-header">
+  
+  <h3>Satellite IR Loop (24h)</h3>
+  
+  <p class="row-caption">GOES-18 + Himawari-9 IR, cold=bright, 24h lookback from T=0.</p>
+  
+  <label for="toggle-satellite_loop" class="row-hide-toggle"></label>
+</div>
+      <div class="satellite-cells">
+        
+          
+          
+
+
+
+<video class="cell-video" src="satloop_2026092600_satellite_loop_f000.mp4" controls muted loop playsinline preload="metadata"></video>
+
+
+
+        
+      </div>
+    </div>
+    
+    <div class="gallery-row">
+      
+      <input type="checkbox" class="row-toggle" id="toggle-ascat_winds" checked>
+      
+<div class="row-header">
+  
+  <h3>ASCAT Scatterometer Winds</h3>
+  
+  <p class="row-caption">Real MetOp-B/C 24h scatterometer winds lookback from T=0, colored by observation age.</p>
+  
+  <label for="toggle-ascat_winds" class="row-hide-toggle"></label>
+</div>
+      <div class="satellite-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="ascat_2026092600_ascat_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="ascat_2026092600_ascat_f000.png" alt="ASCAT Scatterometer Winds +0h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+    
+  </div>
+  
+
+  
+    </div>
+    
+    <div class="column-header"><div>+0h</div><div>+24h</div><div>+48h</div><div>+72h</div><div>+96h</div></div>
+    
+    
+    <div class="product-block" id="block-sa">
+    
+    
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sa_opc" checked>
+    
+<div class="row-header">
+  
+  <h3><a href="https://ocean.weather.gov/Loops/index.php?category=pacific&amp;product=pacsfcf00&amp;days=2&amp;loop=0" target="_blank" rel="noopener">Surface Analysis (OPC)</a></h3>
+  
+  <p class="row-caption">Official chart — ground truth.</p>
+  
+  <label for="toggle-sa_opc" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif" alt="Surface Analysis (OPC) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260927T0000Z.gif" alt="Surface Analysis (OPC) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260928T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260928T0000Z.gif" alt="Surface Analysis (OPC) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      
+        
+        
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sa_gfs" checked>
+    
+<div class="row-header">
+  
+  <h3>Surface Analysis (GFS reconstruction)</h3>
+  
+  <p class="row-caption">Reconstructed from raw GFS fields.</p>
+  
+  <label for="toggle-sa_gfs" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_gfs_f000.png" alt="Surface Analysis (GFS reconstruction) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_gfs_f024.png" alt="Surface Analysis (GFS reconstruction) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_gfs_f048.png" alt="Surface Analysis (GFS reconstruction) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_gfs_f072.png" alt="Surface Analysis (GFS reconstruction) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_gfs_f096.png" alt="Surface Analysis (GFS reconstruction) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sa_ecmwf" checked>
+    
+<div class="row-header">
+  
+  <h3>Surface Analysis (ECMWF reconstruction)</h3>
+  
+  <p class="row-caption">Same method, ECMWF fields.</p>
+  
+  <label for="toggle-sa_ecmwf" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_ecmwf_f000.png" alt="Surface Analysis (ECMWF reconstruction) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_ecmwf_f024.png" alt="Surface Analysis (ECMWF reconstruction) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_ecmwf_f048.png" alt="Surface Analysis (ECMWF reconstruction) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_ecmwf_f072.png" alt="Surface Analysis (ECMWF reconstruction) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sa_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sa_2026092600_ecmwf_f096.png" alt="Surface Analysis (ECMWF reconstruction) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sa_mslp_diff" checked>
+    
+<div class="row-header">
+  
+  <h3>MSLP Difference (GFS − ECMWF)</h3>
+  
+  <p class="row-caption">Model spread — wider = lower confidence.</p>
+  
+  <label for="toggle-sa_mslp_diff" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="mslpdiff_2026092600_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="mslpdiff_2026092600_f000.png" alt="MSLP Difference (GFS − ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="mslpdiff_2026092600_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="mslpdiff_2026092600_f024.png" alt="MSLP Difference (GFS − ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="mslpdiff_2026092600_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="mslpdiff_2026092600_f048.png" alt="MSLP Difference (GFS − ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="mslpdiff_2026092600_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="mslpdiff_2026092600_f072.png" alt="MSLP Difference (GFS − ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="mslpdiff_2026092600_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="mslpdiff_2026092600_f096.png" alt="MSLP Difference (GFS − ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+    </div>
+    
+    <div class="product-block" id="block-500mb">
+    
+    
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-mb500_opc" checked>
+    
+<div class="row-header">
+  
+  <h3><a href="https://ocean.weather.gov/Loops/index.php?category=pacific&amp;product=pac500f00&amp;days=2&amp;loop=0" target="_blank" rel="noopener">500mb Analysis (OPC)</a></h3>
+  
+  <p class="row-caption">Official chart — heights + wind barbs.</p>
+  
+  <label for="toggle-mb500_opc" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260926T0000Z.gif" alt="500mb Analysis (OPC) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260927T0000Z.gif" alt="500mb Analysis (OPC) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260928T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260928T0000Z.gif" alt="500mb Analysis (OPC) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      
+        
+        
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-mb500_gfs" checked>
+    
+<div class="row-header">
+  
+  <h3>500mb Analysis (GFS reconstruction)</h3>
+  
+  <p class="row-caption">Height + wind barbs, from GFS.</p>
+  
+  <label for="toggle-mb500_gfs" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_gfs_f000.png" alt="500mb Analysis (GFS reconstruction) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_gfs_f024.png" alt="500mb Analysis (GFS reconstruction) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_gfs_f048.png" alt="500mb Analysis (GFS reconstruction) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_gfs_f072.png" alt="500mb Analysis (GFS reconstruction) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_gfs_f096.png" alt="500mb Analysis (GFS reconstruction) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-mb500_ecmwf" checked>
+    
+<div class="row-header">
+  
+  <h3>500mb Analysis (ECMWF reconstruction)</h3>
+  
+  <p class="row-caption">Same reconstruction, from ECMWF.</p>
+  
+  <label for="toggle-mb500_ecmwf" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_ecmwf_f000.png" alt="500mb Analysis (ECMWF reconstruction) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_ecmwf_f024.png" alt="500mb Analysis (ECMWF reconstruction) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_ecmwf_f048.png" alt="500mb Analysis (ECMWF reconstruction) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_ecmwf_f072.png" alt="500mb Analysis (ECMWF reconstruction) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mb_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mb_2026092600_ecmwf_f096.png" alt="500mb Analysis (ECMWF reconstruction) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-mb500_diff" checked>
+    
+<div class="row-header">
+  
+  <h3>500mb Height Difference (GFS − ECMWF)</h3>
+  
+  <p class="row-caption">Where the models diverge aloft.</p>
+  
+  <label for="toggle-mb500_diff" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="500mbdiff_2026092600_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mbdiff_2026092600_f000.png" alt="500mb Height Difference (GFS − ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mbdiff_2026092600_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mbdiff_2026092600_f024.png" alt="500mb Height Difference (GFS − ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mbdiff_2026092600_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mbdiff_2026092600_f048.png" alt="500mb Height Difference (GFS − ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mbdiff_2026092600_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mbdiff_2026092600_f072.png" alt="500mb Height Difference (GFS − ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="500mbdiff_2026092600_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="500mbdiff_2026092600_f096.png" alt="500mb Height Difference (GFS − ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+    </div>
+    
+    <div class="product-block" id="block-vorticity500">
+    
+    
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-vort500_gfs" checked>
+    
+<div class="row-header">
+  
+  <h3>Vorticity 500mb (GFS)</h3>
+  
+  <p class="row-caption">Where the upper-level flow is spinning — watch for cyclonic vorticity increasing ahead of a trough axis.</p>
+  
+  <label for="toggle-vort500_gfs" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_gfs_f000.png" alt="Vorticity 500mb (GFS) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_gfs_f024.png" alt="Vorticity 500mb (GFS) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_gfs_f048.png" alt="Vorticity 500mb (GFS) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_gfs_f072.png" alt="Vorticity 500mb (GFS) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_gfs_f096.png" alt="Vorticity 500mb (GFS) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-vort500_ecmwf" checked>
+    
+<div class="row-header">
+  
+  <h3>Vorticity 500mb (ECMWF)</h3>
+  
+  <p class="row-caption">Same field, from ECMWF.</p>
+  
+  <label for="toggle-vort500_ecmwf" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_ecmwf_f000.png" alt="Vorticity 500mb (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_ecmwf_f024.png" alt="Vorticity 500mb (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_ecmwf_f048.png" alt="Vorticity 500mb (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_ecmwf_f072.png" alt="Vorticity 500mb (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500_2026092600_ecmwf_f096.png" alt="Vorticity 500mb (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-vort500_diff" checked>
+    
+<div class="row-header">
+  
+  <h3>Vorticity 500mb Difference (GFS − ECMWF)</h3>
+  
+  <p class="row-caption">Vorticity amplifies noise — read broad patterns, not pixel-level differences.</p>
+  
+  <label for="toggle-vort500_diff" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="vort500diff_2026092600_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500diff_2026092600_f000.png" alt="Vorticity 500mb Difference (GFS − ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500diff_2026092600_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500diff_2026092600_f024.png" alt="Vorticity 500mb Difference (GFS − ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500diff_2026092600_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500diff_2026092600_f048.png" alt="Vorticity 500mb Difference (GFS − ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500diff_2026092600_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500diff_2026092600_f072.png" alt="Vorticity 500mb Difference (GFS − ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="vort500diff_2026092600_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort500diff_2026092600_f096.png" alt="Vorticity 500mb Difference (GFS − ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+    </div>
+    
+    <div class="product-block" id="block-windwave">
+    
+    
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-windwave_opc" checked>
+    
+<div class="row-header">
+  
+  <h3><a href="https://ocean.weather.gov/Loops/index.php?category=pacific&amp;product=pacwwf00&amp;days=2&amp;loop=0" target="_blank" rel="noopener">Wind/Wave Analysis (OPC)</a></h3>
+  
+  <p class="row-caption">Wind + wave height, official only.</p>
+  
+  <label for="toggle-windwave_opc" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_wind_wave_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_wind_wave_000h_valid20260926T0000Z.gif" alt="Wind/Wave Analysis (OPC) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_wind_wave_024h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_wind_wave_024h_valid20260927T0000Z.gif" alt="Wind/Wave Analysis (OPC) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="opc_truth/opc_wind_wave_048h_valid20260928T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_wind_wave_048h_valid20260928T0000Z.gif" alt="Wind/Wave Analysis (OPC) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      
+        
+        
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-windwave_gfs" checked>
+    
+<div class="row-header">
+  
+  <h3>10m Wind Speed (GFS reconstruction)</h3>
+  
+  <p class="row-caption">Reconstructed wind speed + barbs from raw GFS fields, with the same MSLP isobars/H-L centers overlaid.</p>
+  
+  <label for="toggle-windwave_gfs" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_gfs_f000.png" alt="10m Wind Speed (GFS reconstruction) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_gfs_f024.png" alt="10m Wind Speed (GFS reconstruction) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_gfs_f048.png" alt="10m Wind Speed (GFS reconstruction) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_gfs_f072.png" alt="10m Wind Speed (GFS reconstruction) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_gfs_f096.png" alt="10m Wind Speed (GFS reconstruction) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-windwave_ecmwf" checked>
+    
+<div class="row-header">
+  
+  <h3>10m Wind Speed (ECMWF reconstruction)</h3>
+  
+  <p class="row-caption">Same method, ECMWF fields.</p>
+  
+  <label for="toggle-windwave_ecmwf" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_ecmwf_f000.png" alt="10m Wind Speed (ECMWF reconstruction) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_ecmwf_f024.png" alt="10m Wind Speed (ECMWF reconstruction) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_ecmwf_f048.png" alt="10m Wind Speed (ECMWF reconstruction) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_ecmwf_f072.png" alt="10m Wind Speed (ECMWF reconstruction) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10m_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10m_2026092600_ecmwf_f096.png" alt="10m Wind Speed (ECMWF reconstruction) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-windwave_diff" checked>
+    
+<div class="row-header">
+  
+  <h3>10m Wind Speed Difference (GFS − ECMWF)</h3>
+  
+  <p class="row-caption">Model spread — wider = lower confidence.</p>
+  
+  <label for="toggle-windwave_diff" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="wind10mdiff_2026092600_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10mdiff_2026092600_f000.png" alt="10m Wind Speed Difference (GFS − ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10mdiff_2026092600_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10mdiff_2026092600_f024.png" alt="10m Wind Speed Difference (GFS − ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10mdiff_2026092600_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10mdiff_2026092600_f048.png" alt="10m Wind Speed Difference (GFS − ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10mdiff_2026092600_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10mdiff_2026092600_f072.png" alt="10m Wind Speed Difference (GFS − ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="wind10mdiff_2026092600_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="wind10mdiff_2026092600_f096.png" alt="10m Wind Speed Difference (GFS − ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+    </div>
+    
+    <div class="product-block" id="block-sst">
+    
+    
+  
+  
+  <div class="gallery-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sst_gfs" checked>
+    
+<div class="row-header">
+  
+  <h3>Sea Surface Temperature (GFS)</h3>
+  
+  <p class="row-caption">Watch the coastal and current-boundary gradients — real ocean features.</p>
+  
+  <label for="toggle-sst_gfs" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_gfs_f000.png" alt="Sea Surface Temperature (GFS) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_gfs_f024.png" alt="Sea Surface Temperature (GFS) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_gfs_f048.png" alt="Sea Surface Temperature (GFS) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_gfs_f072.png" alt="Sea Surface Temperature (GFS) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_gfs_f096.png" alt="Sea Surface Temperature (GFS) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sst_ecmwf" checked>
+    
+<div class="row-header">
+  
+  <h3>Sea Surface Temperature (ECMWF)</h3>
+  
+  <p class="row-caption">Same field, from ECMWF.</p>
+  
+  <label for="toggle-sst_ecmwf" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_ecmwf_f000.png" alt="Sea Surface Temperature (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_ecmwf_f024.png" alt="Sea Surface Temperature (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_ecmwf_f048.png" alt="Sea Surface Temperature (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_ecmwf_f072.png" alt="Sea Surface Temperature (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sst_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sst_2026092600_ecmwf_f096.png" alt="Sea Surface Temperature (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="gallery-row ecmwf-row">
+    <input type="checkbox" class="row-toggle" id="toggle-sst_diff" checked>
+    
+<div class="row-header">
+  
+  <h3>Sea Surface Temperature Difference (GFS − ECMWF)</h3>
+  
+  <p class="row-caption">GFS&#39;s NSST vs. ECMWF&#39;s OSTIA — independently-produced SST analyses, so this diff is genuinely informative.</p>
+  
+  <label for="toggle-sst_diff" class="row-hide-toggle"></label>
+</div>
+    <div class="row-cells">
+      
+        
+        
+
+
+<a class="cell-link" href="sstdiff_2026092600_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sstdiff_2026092600_f000.png" alt="Sea Surface Temperature Difference (GFS − ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sstdiff_2026092600_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sstdiff_2026092600_f024.png" alt="Sea Surface Temperature Difference (GFS − ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sstdiff_2026092600_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sstdiff_2026092600_f048.png" alt="Sea Surface Temperature Difference (GFS − ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sstdiff_2026092600_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sstdiff_2026092600_f072.png" alt="Sea Surface Temperature Difference (GFS − ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+      
+        
+        
+
+
+<a class="cell-link" href="sstdiff_2026092600_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="sstdiff_2026092600_f096.png" alt="Sea Surface Temperature Difference (GFS − ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+      
+    </div>
+  </div>
+  
+
+</div>
+
+<div class="diagnostics-tier">
+  <h2 class="tier-title">Diagnostics</h2>
+  <p class="diagnostics-intro">These are the building blocks behind the fronts drawn on the Surface Analysis above &mdash; each one is a step in how a front actually gets identified.</p>
+  <div class="column-header"><div>+0h</div><div>+24h</div><div>+48h</div><div>+72h</div><div>+96h</div></div>
+  
+  
+    
+      
+      <div class="product-block" id="block-thickness">
+      
+      
+    
+    <div class="gallery-row">
+      <input type="checkbox" class="row-toggle" id="toggle-thickness_gfs" checked>
+      
+<div class="row-header">
+  
+  <h3>1000–850mb Thickness (GFS)</h3>
+  
+  <p class="row-caption">Low-level warm/cold air over open ocean — NWS&#39;s own recommended layer.</p>
+  
+  <label for="toggle-thickness_gfs" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_gfs_f000.png" alt="1000–850mb Thickness (GFS) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_gfs_f024.png" alt="1000–850mb Thickness (GFS) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_gfs_f048.png" alt="1000–850mb Thickness (GFS) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_gfs_f072.png" alt="1000–850mb Thickness (GFS) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_gfs_f096.png" alt="1000–850mb Thickness (GFS) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+    <div class="gallery-row ecmwf-row">
+      <input type="checkbox" class="row-toggle" id="toggle-thickness_ecmwf" checked>
+      
+<div class="row-header">
+  
+  <h3>1000–850mb Thickness (ECMWF)</h3>
+  
+  <p class="row-caption">Same field, from ECMWF.</p>
+  
+  <label for="toggle-thickness_ecmwf" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_ecmwf_f000.png" alt="1000–850mb Thickness (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_ecmwf_f024.png" alt="1000–850mb Thickness (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_ecmwf_f048.png" alt="1000–850mb Thickness (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_ecmwf_f072.png" alt="1000–850mb Thickness (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thickness_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thickness_2026092600_ecmwf_f096.png" alt="1000–850mb Thickness (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+      </div>
+      <div class="product-block" id="block-thetae">
+      
+      
+    
+    <div class="gallery-row">
+      <input type="checkbox" class="row-toggle" id="toggle-thetae_gfs" checked>
+      
+<div class="row-header">
+  
+  <h3>θe 850mb (GFS)</h3>
+  
+  <p class="row-caption">Sharper air-mass field — used to find fronts.</p>
+  
+  <label for="toggle-thetae_gfs" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_gfs_f000.png" alt="θe 850mb (GFS) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_gfs_f024.png" alt="θe 850mb (GFS) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_gfs_f048.png" alt="θe 850mb (GFS) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_gfs_f072.png" alt="θe 850mb (GFS) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_gfs_f096.png" alt="θe 850mb (GFS) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+    <div class="gallery-row ecmwf-row">
+      <input type="checkbox" class="row-toggle" id="toggle-thetae_ecmwf" checked>
+      
+<div class="row-header">
+  
+  <h3>θe 850mb (ECMWF)</h3>
+  
+  <p class="row-caption">Same field, from ECMWF.</p>
+  
+  <label for="toggle-thetae_ecmwf" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_ecmwf_f000.png" alt="θe 850mb (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_ecmwf_f024.png" alt="θe 850mb (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_ecmwf_f048.png" alt="θe 850mb (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_ecmwf_f072.png" alt="θe 850mb (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="thetae_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="thetae_2026092600_ecmwf_f096.png" alt="θe 850mb (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+      </div>
+      <div class="product-block" id="block-gradmag">
+      
+      
+    
+    <div class="gallery-row">
+      <input type="checkbox" class="row-toggle" id="toggle-gradmag_gfs" checked>
+      
+<div class="row-header">
+  
+  <h3>Gradient Magnitude 850mb — TFP threshold (GFS)</h3>
+  
+  <p class="row-caption">Where θe changes fastest — the front-detection calc.</p>
+  
+  <label for="toggle-gradmag_gfs" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_gfs_f000.png" alt="Gradient Magnitude 850mb — TFP threshold (GFS) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_gfs_f024.png" alt="Gradient Magnitude 850mb — TFP threshold (GFS) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_gfs_f048.png" alt="Gradient Magnitude 850mb — TFP threshold (GFS) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_gfs_f072.png" alt="Gradient Magnitude 850mb — TFP threshold (GFS) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_gfs_f096.png" alt="Gradient Magnitude 850mb — TFP threshold (GFS) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+    <div class="gallery-row ecmwf-row">
+      <input type="checkbox" class="row-toggle" id="toggle-gradmag_ecmwf" checked>
+      
+<div class="row-header">
+  
+  <h3>Gradient Magnitude 850mb — TFP threshold (ECMWF)</h3>
+  
+  <p class="row-caption">Same calculation, from ECMWF.</p>
+  
+  <label for="toggle-gradmag_ecmwf" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_ecmwf_f000.png" alt="Gradient Magnitude 850mb — TFP threshold (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_ecmwf_f024.png" alt="Gradient Magnitude 850mb — TFP threshold (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_ecmwf_f048.png" alt="Gradient Magnitude 850mb — TFP threshold (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_ecmwf_f072.png" alt="Gradient Magnitude 850mb — TFP threshold (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="gradmag_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="gradmag_2026092600_ecmwf_f096.png" alt="Gradient Magnitude 850mb — TFP threshold (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+      </div>
+      <div class="product-block" id="block-vorticity850">
+      
+      
+    
+    <div class="gallery-row">
+      <input type="checkbox" class="row-toggle" id="toggle-vort850_gfs" checked>
+      
+<div class="row-header">
+  
+  <h3>Vorticity 850mb (GFS)</h3>
+  
+  <p class="row-caption">Cyclonic/anticyclonic spin — will eventually feed the front-detection gate&#39;s dynamical criterion (on hold), shown here as its own diagnostic meanwhile.</p>
+  
+  <label for="toggle-vort850_gfs" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_gfs_f000.png" alt="Vorticity 850mb (GFS) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_gfs_f024.png" alt="Vorticity 850mb (GFS) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_gfs_f048.png" alt="Vorticity 850mb (GFS) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_gfs_f072.png" alt="Vorticity 850mb (GFS) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_gfs_f096.png" alt="Vorticity 850mb (GFS) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+    <div class="gallery-row ecmwf-row">
+      <input type="checkbox" class="row-toggle" id="toggle-vort850_ecmwf" checked>
+      
+<div class="row-header">
+  
+  <h3>Vorticity 850mb (ECMWF)</h3>
+  
+  <p class="row-caption">Same field, from ECMWF.</p>
+  
+  <label for="toggle-vort850_ecmwf" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_ecmwf_f000.png" alt="Vorticity 850mb (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_ecmwf_f024.png" alt="Vorticity 850mb (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_ecmwf_f048.png" alt="Vorticity 850mb (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_ecmwf_f072.png" alt="Vorticity 850mb (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850_2026092600_ecmwf_f096.png" alt="Vorticity 850mb (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+    <div class="gallery-row ecmwf-row">
+      <input type="checkbox" class="row-toggle" id="toggle-vort850_diff" checked>
+      
+<div class="row-header">
+  
+  <h3>Vorticity 850mb Difference (GFS − ECMWF)</h3>
+  
+  <p class="row-caption">Vorticity amplifies noise — read broad patterns, not pixel-level differences.</p>
+  
+  <label for="toggle-vort850_diff" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="vort850diff_2026092600_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850diff_2026092600_f000.png" alt="Vorticity 850mb Difference (GFS − ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850diff_2026092600_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850diff_2026092600_f024.png" alt="Vorticity 850mb Difference (GFS − ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850diff_2026092600_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850diff_2026092600_f048.png" alt="Vorticity 850mb Difference (GFS − ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850diff_2026092600_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850diff_2026092600_f072.png" alt="Vorticity 850mb Difference (GFS − ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="vort850diff_2026092600_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="vort850diff_2026092600_f096.png" alt="Vorticity 850mb Difference (GFS − ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+      </div>
+      <div class="product-block" id="block-frontogenesis">
+      
+      
+    
+    <div class="gallery-row">
+      <input type="checkbox" class="row-toggle" id="toggle-frontogenesis_gfs" checked>
+      
+<div class="row-header">
+  
+  <h3>Frontogenesis 850mb (GFS)</h3>
+  
+  <p class="row-caption">Fronts strengthening or weakening.</p>
+  
+  <label for="toggle-frontogenesis_gfs" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_gfs_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_gfs_f000.png" alt="Frontogenesis 850mb (GFS) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_gfs_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_gfs_f024.png" alt="Frontogenesis 850mb (GFS) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_gfs_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_gfs_f048.png" alt="Frontogenesis 850mb (GFS) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_gfs_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_gfs_f072.png" alt="Frontogenesis 850mb (GFS) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_gfs_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_gfs_f096.png" alt="Frontogenesis 850mb (GFS) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+    
+    <div class="gallery-row ecmwf-row">
+      <input type="checkbox" class="row-toggle" id="toggle-frontogenesis_ecmwf" checked>
+      
+<div class="row-header">
+  
+  <h3>Frontogenesis 850mb (ECMWF)</h3>
+  
+  <p class="row-caption">Same calculation, from ECMWF.</p>
+  
+  <label for="toggle-frontogenesis_ecmwf" class="row-hide-toggle"></label>
+</div>
+      <div class="row-cells">
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_ecmwf_f000.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_ecmwf_f000.png" alt="Frontogenesis 850mb (ECMWF) +0h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_ecmwf_f024.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_ecmwf_f024.png" alt="Frontogenesis 850mb (ECMWF) +24h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_ecmwf_f048.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_ecmwf_f048.png" alt="Frontogenesis 850mb (ECMWF) +48h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_ecmwf_f072.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_ecmwf_f072.png" alt="Frontogenesis 850mb (ECMWF) +72h" loading="lazy">
+</a>
+
+
+
+        
+          
+          
+
+
+<a class="cell-link" href="frontogenesis_2026092600_ecmwf_f096.png" target="_blank" rel="noopener">
+  <img class="cell-img" src="frontogenesis_2026092600_ecmwf_f096.png" alt="Frontogenesis 850mb (ECMWF) +96h" loading="lazy">
+</a>
+
+
+
+        
+      </div>
+    </div>
+  
+  </div>
+</div>
+
+<div class="discussion">
+  <div class="discussion-box">
+    
+    <h3><a href="https://tgftp.nws.noaa.gov/data/raw/fz/fzpn02.kwbc.hsf.epi.txt" target="_blank" rel="noopener">OPC High Seas Forecast (verbatim)</a></h3>
+    
+    <p class="box-caption">The real bulletin text, archived at harvest time, unedited.</p>
+    
+    <pre class="hsf-text">FZPN02 KWBC 261125
+HSFEPI
+
+HIGH SEAS FORECAST FOR METAREA XII
+NWS OCEAN PREDICTION CENTER WASHINGTON DC
+1145 UTC SAT SEP 26 2026 
+
+CCODE/2:31:12:11:00/AOW+POR+AOE/NWS/CCODE
+SUPERSEDED BY NEXT ISSUANCE IN 6 HOURS
+
+SEAS GIVEN AS SIGNIFICANT WAVE HEIGHT...WHICH IS THE AVERAGE 
+HEIGHT OF THE HIGHEST 1/3 OF THE WAVES. INDIVIDUAL WAVES MAY BE 
+MORE THAN TWICE THE SIGNIFICANT WAVE HEIGHT. 
+
+ONLY YOU KNOW THE WEATHER AT YOUR POSITION. REPORT IT TO THE 
+NATIONAL WEATHER SERVICE. EMAIL US AT 
+VOSOPS@NOAA.GOV(LOWERCASE). 
+
+FOR ANY TROPICAL CYCLONE INFORMATION BEYOND 48 HOURS REFERENCE 
+THE ASSOCIATED NWS TROPICAL CYCLONE FORECAST/ADVISORY (TCM). 
+
+SECURITE 
+
+PACIFIC S OF 67N AND N OF 30N E OF A LINE FROM THE BERING STRAIT 
+TO 53N172E TO 50N180W TO 30N180W 
+
+ALL FORECASTS VALID OVER ICE FREE FORECAST WATERS 
+
+SYNOPSIS VALID 0600 UTC SEP 26. 
+24 HOUR FORECAST VALID 0600 UTC SEP 27. 
+48 HOUR FORECAST VALID 0600 UTC SEP 28. 
+
+.WARNINGS. 
+
+...GALE WARNING... 
+.LOW 57N176W 969 MB MOVING E 10 KT. WITHIN 360 NM S SEMICIRCLE 
+WINDS 35 TO 45 KT. SEAS 3 TO 6 M. ELSEWHERE WITHIN 420 NM 
+NW...480 NM NE...960 NM SE AND 720 NM SW QUADRANTS WINDS 25 TO 
+35 KT. SEAS 2.5 TO 5 M. 
+.24 HOUR FORECAST LOW 58N162W 979 MB. WITHIN 480 NM SE...540 NM 
+SW...AND 420 NM NW QUADRANTS WINDS 20 TO 30 KT. SEAS 3 TO 5.5 M. 
+ELSEWHERE WITHIN 780 NM SE...660 NM SW...AND 480 NM NW QUADRANTS 
+WINDS 20 TO 30 KT. SEAS 2.5 TO 5 M...HIGHEST IN SE QUADRANT. 
+ALSO WITHIN 1080 NM SE QUADRANTS WINDS TO 25 KT. SEAS 2.5 TO 4 
+M. 
+.48 HOUR FORECAST LOW 58N154W 990 MB. WITHIN 1020 NM SE...720 NM 
+SW...AND 480 NM NW QUADRANTS WINDS 20 TO 30 KT. SEAS 2.5 TO 5 
+M...HIGHEST IN SE QUADRANT. 
+
+..GALE WARNING... 
+.LOW 58N149W 996 MB MOVING NE 10 KT. LINE EXTENDS FROM LOW 
+CENTER TO 57N141W TO 53N139W. WITHIN 120 NM NE OF THE LINE WINDS 
+25 TO 35 KT. SEAS 2.5 TO 4 M. 
+.24 HOUR FORECAST LOW AND CONDITIONS ABSORBED BY LOW 58N162W IN 
+STORM WARNING ABOVE. 
+
+.SYNOPSIS AND FORECAST. 
+
+.N OF 45N E OF 126W WINDS LESS THAN 25 KT. SEAS TO 3 M. 
+.24 HOUR FORECAST CONDITIONS DIMINISHED. 
+
+.LOW 46N139W 1013 MB MOVING SE 20 KT. WITHIN 120 NM W SEMICIRCLE 
+AND WITHIN 120 NM E OF A LINE FROM LOW CENTER TO 42N138W TO 
+39N139W WINDS 20 TO 30 KT. SEAS TO 2.5 M. 
+.24 HOUR FORECAST LOW 41N133W 1016 MB. FROM 39N TO 45N W OF 174W 
+WINDS TO 25 KT. SEAS TO 3 M. 
+.48 HOUR FORECAST LOW DISSIPATED AND ASSOCIATED CONDITIONS 
+DIMINISHED. 
+
+.LOW JUST W OF AREA NEAR 42N177E 1010 MB MOVING NE 35 KT. WITHIN 
+300 NM SE QUADRANT WINDS LESS THAN 25 KT. SEAS TO 2.5 M. 
+.24 HOUR FORECAST LOW 50N155W 1006 MB. WITHIN 180 NM SE OF A 
+LINE FROM LOW CENTER TO 44N167W WINDS 20 TO 30 KT. SEAS 2.5 TO 5 
+M.
+.48 HOUR FORECAST CONDITIONS DESCRIBED WITH LOW 58N154W IN STORM 
+WARNING IN WARNINGS SECTION ABOVE. 
+
+.FROM 33N TO 42N BETWEEN 121W AND 127W WINDS TO 25 KT. SEAS 3 M. 
+.24 HOUR FORECAST FROM 36N TO 44N BETWEEN 120W AND 126W WINDS TO 
+25 KT. SEAS TO 3 M. 
+.48 HOUR FORECAST FROM 33N TO 43N BETWEEN 119W AND 128W WINDS TO 
+25 KT. SEAS T0 3 M. 
+
+.DENSE FOG. VSBY OCCASIONALLY LESS THAN 1 NM FROM 43N TO 46N 
+BETWEEN 174 AND 177W.
+.24 HOUR FORECAST DENSE FOG WITHIN 90 NM SE OF A LINE FROM 
+42N171W TO 45N168W TO 47N160W. 
+.48 HOUR FORECAST DENSE FOG WITHIN 60 NM SE OF A LINE FROM 
+43N157W TO 48N147W. 
+
+.FORECASTER HYDE. OCEAN PREDICTION CENTER.
+
+NATIONAL HURRICANE CENTER MIAMI FL
+
+E PACIFIC FROM THE EQUATOR TO 30N E OF 140W AND 03.4S TO THE
+EQUATOR E OF 120W
+
+SYNOPSIS VALID 0600 UTC SAT SEP 26.
+24 HOUR FORECAST VALID 0600 UTC SUN SEP 27.
+48 HOUR FORECAST VALID 0600 UTC MON SEP 28.
+
+.WARNINGS.
+
+...HURRICANE WARNING...
+.HURRICANE POLO NEAR 17.6N 111.0W 917 MB AT 0900 UTC SEP 26
+MOVING WNW OR 290 DEG AT 8 KT. MAXIMUM SUSTAINED WINDS 145 KT
+GUSTS 175 KT. TROPICAL STORM FORCE WINDS WITHIN 110 NM NE
+QUADRANT...80 NM SE QUADRANT...90 NM SW QUADRANT...AND 100 NM NW
+QUADRANT. SEAS 4 M OR GREATER WITHIN 210 NM NE AND SW 
+QUADRANTS...AND 180 NM SE AND NW QUADRANTS WITH SEAS TO 14 M. 
+ELSEWHERE WITHIN 19N105W TO 20N108W TO 19N111W TO 17N113W TO 
+15N112W TO 14N111W TO 15N109W TO 19N105W...INCLUDING NEAR CABO 
+CORRIENTES...WINDS 20 TO 33 KT. SEAS 3.5 TO 5.5 M. REMAINDER OF 
+AREA WITHIN 17N103W TO 23N109W TO 24N118W TO 12N118W TO 09N109W 
+TO 10N105W TO 17N103W...WITHIN 60 NM OF SHORE...WINDS 20 KT OR 
+LESS. SEAS 3 TO 3.5 M IN MIXED SWELL.
+.24 HOUR FORECAST HURRICANE POLO NEAR 19.7N 113.3W. MAXIMUM 
+SUSTAINED WINDS 135 KT GUSTS 165 KT. TROPICAL STORM FORCE WINDS 
+WITHIN 90 NM OF CENTER EXCEPT 110 NM NE QUADRANT. SEAS 4 M OR 
+GREATER WITHIN 180 NM N SEMICIRCLE...210 NM SE QUADRANT AND 150 
+NM W SEMICIRCLE OF CENTER WITH SEAS TO 13.5 M. ELSEWHERE WITHIN 
+19N110W TO 21N111W TO 21N114W TO 18N116W TO 16N114W TO 16N111W TO
+19N110W WINDS 20 TO 33 KT. SEAS 3.5 TO 5.5 M. REMAINDER OF 
+AREA...WITHIN 21N106W TO 27N119W TO 10N119W TO 09N108W TO 11N106W
+TO 21N106W...INCLUDING NEAR CABO CORRIENTES AND WITHIN 60 NM OF 
+SHORE...WINDS 20 KT OR LESS. SEAS 2.5 TO 3.5 M IN MIXED SWELL. 
+.48 HOUR FORECAST HURRICANE POLO NEAR 23.4N 113.8W. MAXIMUM 
+SUSTAINED WINDS 110 KT GUSTS 135 KT. TROPICAL STORM FORCE WINDS 
+WITHIN 80 NM W SEMICIRCLE...100 NM NE QUADRANT AND 90 NM SE 
+QUADRANT. SEAS 4 M OR GREATER WITHIN 180 NM NE QUADRANT...240 NM 
+SE QUADRANT AND 150 NM W SEMICIRCLE OF CENTER WITH SEAS TO 13 M. 
+ELSEWHERE WITHIN 22N112W TO 24N113W TO 23N116W TO 20N116.5W TO 
+18N116W TO 17N115W TO 19N113W TO 22N112W WINDS 20 TO 33 KT. SEAS 
+3 TO 5 M. REMAINDER OF AREA WITHIN 23N109W TO 30N121W TO 15N121W 
+TO 13N118W TO 13N110W TO 23N109W...INCLUDING SEBASTIAN VIZCAINO 
+BAY AND WITHIN 60 NM OF SHORE...WINDS 20 KT OR LESS. SEAS 2.5 TO 
+3.5 M IN MIXED SWELL.
+
+...HURRICANE WARNING...
+.HURRICANE ODALYS NEAR 19.1N 123.7W 951 MB AT 0900 UTC SEP 26
+MOVING N OR 355 DEG AT 4 KT. MAXIMUM SUSTAINED WINDS 100 KT
+GUSTS 120 KT. TROPICAL STORM FORCE WINDS WITHIN 120 NM N
+SEMICIRCLE...90 NM SE QUADRANT AND 100 NM SW QUADRANT.	SEAS 4 M
+OR GREATER WITHIN 180 NM E SEMICIRCLE...210 NM SW QUADRANT AND
+150 NM NW QUADRANT WITH SEAS TO 11 M. ELSEWHERE WITHIN 20N121W 
+TO 22N125W TO 20N127.5W TO 17N127W TO 16N125W TO 16N124W TO 
+17N122W TO 20N121W WINDS 20 TO 33 KT. SEAS 3 TO 5.5 M. REMAINDER 
+OF AREA WITHIN 24N118W TO 25N125W TO 21N131W TO 15N132W TO 
+10N129W TO 12N117W TO 24N118W WINDS 20 KT OR LESS. SEAS 2.5 TO 
+3.5 M IN MIXED SWELL.
+.24 HOUR FORECAST HURRICANE ODALYS NEAR 21.0N 123.5W. MAXIMUM 
+SUSTAINED WINDS 75 KT GUSTS 90 KT. TROPICAL STORM FORCE WINDS 
+WITHIN 80 NM N SEMICIRCLE AND 70 NM S SEMICIRCLE. SEAS 4 M OR 
+GREATER WITHIN 180 NM S SEMICIRCLE AND 150 NM N SEMICIRCLE OF 
+CENTER WITH SEAS TO 9.5 M. ELSEWHERE WITHIN 22N122W TO 23N125W TO
+22N127W TO 19N126W TO 18N125W TO 19N122W TO 22N122W WINDS 20 TO 
+33 KT. SEAS 3 TO 5 M. REMAINDER OF AREA WITHIN 27N119W TO 29N127W
+TO 26N131W TO 16N132W TO 10N127W TO 10N119W TO 27N119W WINDS 20 
+KT OR LESS. SEAS 2.5 TO 4.0 M IN MIXED SWELL.
+.36 HOUR FORECAST TROPICAL STORM ODALYS NEAR 21.8N 123.1W.
+MAXIMUM SUSTAINED WINDS 60 KT GUSTS 75 KT.
+.48 HOUR FORECAST TROPICAL STORM ODALYS NEAR 22.1N 122.7W. 
+MAXIMUM SUSTAINED WINDS 45 KT GUSTS 55 KT. TROPICAL STORM FORCE 
+WINDS WITHIN 20 NM NE QUADRANT...10 NM SE QUADRANT...30 NM SW 
+QUADRANT...AND 40 NM NW QUADRANT. SEAS 4 M OR GREATER WITHIN 120 
+NM OF CENTER WITH SEAS TO 5.5. ELSEWHERE WITHIN 23N122W TO 
+25N123W TO 26N127W TO 23N127W TO 20N125W TO 21N124W TO 23N122W 
+WINDS 20 TO 33 KT. SEAS 2.5 TO 4 M. REMAINDER OF AREA WITHIN 
+30N121W TO 30N130W TO 26N140W TO 18N140W TO 16N129W TO 15N121W TO
+30N121W WINDS 20 KT OR LESS. SEAS 2.5 TO 3.5 M IN MIXED SWELL.
+
+FORECAST WINDS IN AND NEAR ACTIVE TROPICAL CYCLONES SHOULD BE
+USED WITH CAUTION DUE TO UNCERTAINTY IN FORECAST TRACK...SIZE
+AND INTENSITY.
+
+.SYNOPSIS AND FORECAST.
+
+.LOW PRES...INVEST EP90...NEAR 11N98W 1008 MB. WINDS 20 KT OR
+LESS. SEAS LESS THAN 2.5 M. NUMEROUS SHOWERS AND TSTMS FROM 08N
+TO 16N BETWEEN 92W AND 100W. 
+.24 HOUR FORECAST LOW PRES...INVEST EP90...POSSIBLE TROPICAL 
+CYCLONE...NEAR 13N99W 1006 MB. WITHIN 10N98W TO 12N100W TO 
+11N101W TO 10N99W TO 09N98W TO 10N96W WINDS 20 TO 30 KT. SEAS 2.5
+M TO 3.5 M.
+.48 HOUR FORECAST LOW PRES...INVEST EP90...POSSIBLE TROPICAL 
+CYCLONE...NEAR 14N101W 1000 MB. WITHIN 13N99W TO 16N97W TO 
+15N102W TO 13N102.5W TO 10N102W TO 09N99W TO 10N97W TO 13N99W 
+WINDS 20 TO 30 KT. SEAS 2.5 TO 4 M.
+
+.24 HOUR FORECAST NEW LOW PRES 12N141W 1008 MB. WITHIN 10N140W 
+TO 08N140W TO 07N133W TO 08N132W TO 09N135W TO 10N137W TO 10N140W
+SW TO W WINDS 20 TO 25 KT. SEAS 2.5 TO 3 M.
+.48 HOUR FORECAST LOW PRES NEAR 13N139W 1006 MB. WITHIN 09N128W 
+TO 09.5N134W TO 11N137W TO 12N139W TO 07N140W TO 08N136W TO 
+09N131W SW WINDS 20 TO 30 KT. SEAS 2.5 TO 4 M. ELSEWHERE WITHIN 
+12N121W TO 11.5N131W TO 12N137W TO 13N140W TO 08N140W TO 07N130W 
+TO 12N121W WINDS 20 KT OR LESS. SEAS 2.5 TO 3 M IN MIXED SWELL.
+
+.REMAINDER OF AREA WINDS 20 KT OR LESS. SEAS LESS THAN 2.5 M.
+
+CONVECTION VALID AT 0915 UTC SAT SEP 26...
+
+.HURRICANE POLO...NUMEROUS STRONG WITHIN 90 NM NE QUADRANT...
+75 NM SE QUADRANT AND 120 NM W SEMICIRCLE.
+
+.HURRICANE ODALYS...NUMEROUS STRONG WITHIN 120 NM NE QUADRANT...
+60 NM S SEMICIRCLE AND 90 NM NW QUADRANT.
+
+.TROPICAL WAVE FROM 16N97W TO LOW PRES...INVEST EP90...NEAR 
+11N97W 1008 MB AND TO 10N97W...NUMEROUS MODERATE TO STRONG FROM 
+08N TO 16N BETWEEN 92W AND 100W.
+
+.INTERTROPICAL CONVERGENCE ZONE/MONSOON TROUGH...
+MONSOON TROUGH AXIS EXTENDS FROM 08N83W TO 09N90W TO INVEST EP90
+TO 14N99W. IT RESUMES S OF ODALYS AT 14N122W TO 11N127W TO 
+10N130W TO 13N140W. SCATTERED MODERATE ISOLATED STRONG FROM 04N 
+TO 08N BETWEEN 84W AND 87W...FROM 05N TO 09N BETWEEN 127W AND 
+134W AND FROM 01N TO 09N W OF 135W. SCATTERED MODERATE FROM 05N 
+TO 08N BETWEEN 92W AND 96W AND WITHIN 180 NM SE OF THE TROUGH 
+BETWEEN 122W AND 127W.
+
+$$
+.FORECASTER AGUIRRE. NATIONAL HURRICANE CENTER.
+
+NATIONAL WEATHER SERVICE HONOLULU HI
+
+NORTH PACIFIC EQUATOR TO 30N BETWEEN 140W AND 180W
+
+SYNOPSIS VALID 0600 UTC SEP 26 2026.
+24 HOUR FORECAST VALID 0600 UTC SEP 27 2026.
+48 HOUR FORECAST VALID 0600 UTC SEP 28 2026.
+
+.WARNINGS.
+
+...HURRICANE WARNING...
+.HURRICANE NOLO NEAR 16.9N 155.3W 975 MB AT 0900 UTC SEP 26
+AND QUASI STATIONARY. MAXIMUM SUSTAINED WINDS 90 KT GUSTS 110 KT.
+TROPICAL STORM FORCE WINDS WITHIN 120 NM N SEMICIRCLE AND 100 NM
+S SEMICIRCLE. WINDS 20 TO 30 KT ELSEWHERE FROM 14N TO 27N BETWEEN
+150W AND 160W. SEAS 4 M OR GREATER WITHIN 180 NM S SEMICIRCLE...
+210 NM NE QUADRANT AND 150 NM NW QUADRANT WITH SEAS TO 8.5 M. SEAS
+2.5 TO 3.5 M ELSEWHERE FROM 11N TO 26N BETWEEN 150W AND 160W.
+SCATTERED TO NUMEROUS MODERATE TSTMS WITHIN 100 NM SW SEMICIRCLE
+AND 60 NM NE SEMICIRCLE FROM CENTER.
+.24 HOUR FORECAST HURRICANE NOLO NEAR 16.8N 156.9W. MAXIMUM
+SUSTAINED WINDS 105 KT GUSTS 130 KT. TROPICAL STORM FORCE WINDS
+WITHIN 80 NM S SEMICIRCLE...140 NM NE QUADRANT AND 110 NM NW
+QUADRANT. WINDS 20 TO 30 KT ELSEWHERE FROM 14N TO 27N BETWEEN 150W
+AND 161W. SEAS 4 M OR GREATER FROM 15N TO 20N BETWEEN 154W AND
+159W WITH SEAS TO 9.5 M. SEAS 2.5 TO 3.5 M ELSEWHERE FROM 12N TO
+29N BETWEEN 150W AND 163W.
+.48 HOUR FORECAST HURRICANE NOLO NEAR 17.2N 160.6W. MAXIMUM
+SUSTAINED WINDS 120 KT GUSTS 145 KT. TROPICAL STORM FORCE WINDS
+WITHIN 150 NM NE QUADRANT...90 NM SE QUADRANT...70 NM SW QUADRANT
+AND 100 NM NW QUADRANT. WINDS 20 TO 30 KT ELSEWHERE FROM 15N TO
+26N BETWEEN 154W AND 163W. SEAS 4 M OR GREATER FROM 14N TO 19N
+BETWEEN 157W AND 164W WITH SEAS TO 10.5 M. SEAS 2.5 TO 3.5 M
+ELSEWHERE FROM 10N TO 30N BETWEEN 155W AND 170W.
+
+FORECAST WINDS IN AND NEAR ACTIVE TROPICAL CYCLONES SHOULD BE
+USED WITH CAUTION DUE TO UNCERTAINTY IN FORECAST TRACK...SIZE
+AND INTENSITY.
+
+.SYNOPSIS AND FORECAST.
+
+.LOW 1011 MB 09N177W NEARLY STATIONARY. ISOLATED MODERATE TSTMS N
+OF LOW WITHIN 50 NM OF 12N177W.
+.24 HOUR FORECAST LOW ABSORBED BY MONSOON TROUGH.
+
+.TROUGH 18N175W TO 22N174W TO 27N171W MOVING W 10 KT.
+.24 HOUR FORECAST TROUGH 19N179W TO 23N179W TO 27N178W.
+.48 HOUR FORECAST TROUGH MOVED W OF AREA.
+
+.WINDS 20 TO 25 KT FROM 19N TO 26N BETWEEN 140W AND 150W...AND
+FROM 21N TO 26N BETWEEN 160W AND 166W. SEAS 2.5 TO 3 M FROM 15N TO
+25N BETWEEN 140W AND 150W...AND FROM 14N TO 26N BETWEEN 160W AND
+165W.
+.24 HOUR FORECAST WINDS 20 TO 25 KT FROM 15N TO 27N BETWEEN 140W
+AND 150W...AND 20 TO 30 KT FROM 18N TO 27N BETWEEN 161W AND 167W.
+SEAS 2.5 TO 3 M FROM 13N TO 26N BETWEEN 140W AND 150W...AND FROM
+16N TO 30N BETWEEN 163W AND 170W.
+.48 HOUR FORECAST WINDS 20 TO 25 KT FROM 15N TO 26N BETWEEN 140W
+AND 154W...AND FROM 18N TO 26N BETWEEN 163W AND 171W. SEAS 2.5 TO
+3 M FROM 13N TO 28N BETWEEN 140W AND 155W...AND FROM 18N TO 29N
+BETWEEN 170W AND 174W.
+
+.24 HOUR FORECAST NEW LOW 1008 MB NEAR 12N140W. WINDS 20 TO 25 KT
+FROM 08N TO 13N E OF 142W. SEAS 2.5 TO 3 M FROM 09N TO 12N E OF
+144W.
+.48 HOUR FORECAST LOW 1007 MB NEAR 13N142W. WINDS 20 TO 25 KT
+FROM 07N TO 09N E OF 144W. SEAS 2.5 TO 3 M FROM 07N TO 12N E OF
+145W.
+
+.WINDS 20 KT OR LESS AND SEAS BELOW 2.5 M OVER REMAINDER OF
+FORECAST AREA.
+
+.MONSOON TROUGH 14N140W TO 16N150W...AND 14N166W TO LOW MENTIONED
+ABOVE TO 10N180W. SCATTERED MODERATE TSTMS WITHIN 50 NM OF TROUGH
+BETWEEN 140W AND 144W...AND S OF TROUGH FROM 00N TO 09N BETWEEN
+160W AND 176W. SCATTERED MODERATE TO STRONG TSTMS S OF TROUGH
+FROM 02N TO 11N E OF 145W.
+
+$$
+
+.FORECASTER CHAN. HONOLULU HI.
+
+
+</pre>
+    
+  </div>
+  <div class="discussion-box">
+    <h3>Generated Discussion</h3>
+    <p class="box-caption">Automated synoptic discussion.</p>
+    <p class="generated-text">Generated discussion is not yet available for this build. This section will summarize model agreement, notable features, and forecast confidence once generate_discussion (LLM #2) is implemented.</p>
+  </div>
+</div>
+
+<div class="learn-more">
+  <p>This page focuses on the charts themselves. For the underlying concepts — surface vs. 500mb coupling, why models diverge, the thickness/540-line caveat over open ocean — see the reference guide. <a href="reference.html">Reference guide</a></p>
+</div>
+
+</main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".cell-video").forEach((v) => { v.playbackRate = 2.0; });
+  });
+</script>
+</body>
+</html>

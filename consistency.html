@@ -1,0 +1,1943 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPC Run Consistency &mdash; 2026-09-26 17:12 UTC</title>
+<style>
+  
+  :root {
+    --bg: #12161c;
+    --panel-bg: #1a1f28;
+    --border: #2a323f;
+    --text: #d7dce2;
+    --text-muted: #8a94a3;
+    --accent-amber: #d99b3f;
+    --accent-amber-bg: #3a2f1a;
+    --hatch-color: #4a4238;
+    --link: #6fb3ff;
+    --row-label-width: 5.6rem;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 1.5rem 3rem;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.4;
+  }
+  h1, h2, h3 { font-weight: 600; }
+  a { color: var(--link); }
+
+  .masthead { padding: 1.25rem 0 1rem; border-bottom: 1px solid var(--border); }
+  .masthead h1 { margin: 0 0 0.4rem; font-size: 1.5rem; }
+  .disclaimer { color: var(--text-muted); font-size: 0.85rem; margin: 0.25rem 0 0.9rem; }
+  .back-link { font-size: 0.85rem; margin: 0 0 0.9rem; }
+  .time-table { border-collapse: collapse; font-size: 0.82rem; color: var(--text-muted); }
+  .time-table th, .time-table td { padding: 0.15rem 1rem 0.15rem 0; text-align: left; font-weight: 400; }
+  .time-table th { color: var(--text); font-weight: 600; }
+  .time-table td:first-child, .time-table th:first-child { padding-left: 0; font-weight: 600; color: var(--text); }
+
+  .jump-nav { margin: 0.75rem 0 0; font-size: 0.9rem; }
+  .jump-nav a { margin-right: 1rem; }
+
+  h2.tier-title { font-size: 1.1rem; margin: 1.5rem 0 0.25rem; }
+  .section-block { border: 1px solid var(--border); border-radius: 6px; margin: 1rem 0; padding: 0.75rem 0.9rem; background: var(--panel-bg); }
+  h3.track-title { font-size: 0.95rem; margin: 0.9rem 0 0.4rem; color: var(--text-muted); }
+  .track + .track { border-top: 1px dashed var(--border); padding-top: 0.6rem; }
+
+  
+  .column-header { display: grid; gap: 0.4rem; margin: 0.4rem 0 0.4rem calc(var(--row-label-width) + 0.6rem); font-size: 0.75rem; color: var(--text-muted); text-align: center; }
+  .column-header div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  
+  .pinned-row { display: flex; align-items: flex-start; gap: 0.6rem; margin: 0.15rem 0; }
+  .pinned-row-label { flex: 0 0 var(--row-label-width); padding-top: 0.15rem; font-size: 0.72rem; line-height: 1.25; color: var(--text-muted); margin: 0; }
+  .pinned-row .row-cells { flex: 1 1 auto; min-width: 0; margin: 0; }
+  .row-cells { display: grid; gap: 0.4rem; margin: 0.1rem 0; }
+  .cell-wrap { min-width: 0; }
+
+  /* --- Run rows: independent per-row checkbox (direct sibling of
+     .row-cells inside one <label> -- a simpler, non-conflicting mechanism
+     from the daily gallery's page-wide #ecmwfToggle, no descendant-wildcard
+     trick needed here). Label sits to the LEFT of the row (flex), not
+     stacked above it -- putting the run's own date/cycle label on its own
+     text line above every row added a full line of vertical rhythm per
+     row, on top of already-cramped inter-row margins, which is exactly
+     what made scanning down a single column across many rows feel
+     disjointed (real user report) -- eliminating that line, not just
+     trimming margins further, is what actually fixes it. */
+  .run-row { display: flex; align-items: flex-start; gap: 0.6rem; margin: 0.15rem 0; cursor: pointer; }
+  .run-row input { position: absolute; opacity: 0; pointer-events: none; }
+  .run-row .run-label { flex: 0 0 var(--row-label-width); padding-top: 0.15rem; font-size: 0.72rem; line-height: 1.25; color: var(--text-muted); }
+  .run-row .row-cells { display: none; flex: 1 1 auto; min-width: 0; margin: 0; }
+  .run-row input:checked ~ .row-cells { display: grid; }
+
+  .gt-tag { display: block; font-size: 0.65rem; color: var(--accent-amber); text-align: center; margin-top: 0.1rem; }
+
+  .cell-link { display: block; position: relative; cursor: pointer; }
+  .cell-img { width: 100%; display: block; border-radius: 3px; border: 1px solid var(--border); transition: opacity 0.1s ease, border-color 0.1s ease; }
+  .cell-link:hover .cell-img { opacity: 0.85; border-color: var(--link); }
+  .cell-badge { display: inline-block; margin-top: 0.25rem; font-size: 0.7rem; color: var(--accent-amber); background: var(--accent-amber-bg); padding: 0.1rem 0.4rem; border-radius: 3px; }
+
+  
+  .cell-gap {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    width: 100%; aspect-ratio: 1.57; min-height: 24px; padding: 0.15rem;
+    border-radius: 3px; border: 1px solid var(--border); color: var(--text-muted);
+    font-size: clamp(0.52rem, 2.6vw, 0.7rem); line-height: 1.15; overflow: hidden;
+  }
+  
+  .cell-gap span { min-width: 0; overflow-wrap: anywhere; }
+  .cell-gap-suspended { background: repeating-linear-gradient(45deg, var(--panel-bg), var(--panel-bg) 8px, var(--hatch-color) 8px, var(--hatch-color) 9px); }
+  .cell-gap-neutral { background: var(--panel-bg); }
+
+  /* --- Satellite fusion row toggle (independent, SA track only). Same
+     label-beside-content pattern as .run-row above -- checkbox and
+     .satellite-row are direct siblings inside one <label>, so a plain
+     class-based rule works for every instance with no per-track/section
+     dynamic CSS needed. --- */
+  .satellite-toggle-row { display: flex; align-items: flex-start; gap: 0.6rem; margin: 0.15rem 0; cursor: pointer; }
+  .satellite-toggle-row input { position: absolute; opacity: 0; pointer-events: none; }
+  .satellite-toggle-row .satellite-toggle-label { flex: 0 0 var(--row-label-width); padding-top: 0.15rem; font-size: 0.68rem; line-height: 1.25; color: var(--text-muted); }
+  .satellite-toggle-row .satellite-row { display: none; flex: 1 1 auto; min-width: 0; margin: 0; }
+  .satellite-toggle-row input:checked ~ .satellite-row { display: grid; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <h1>OPC North Pacific &mdash; Run Consistency</h1>
+  <p class="disclaimer">Not a reconstruction &mdash; this page compares OPC's own official products over time: each prior forecast run's Surface Analysis and 500mb charts against the real T=0 Surface Analysis (ground truth) that followed, for both the 00Z and 12Z cycles, to see how accurate those forecasts turned out to be.</p>
+  <p class="back-link"><a href="index.html">&larr; Back to the Surface Analysis Reconstruction</a></p>
+  <p class="back-link">Freely pick any two products/runs/leads to compare side by side or overlaid: <a href="compare.html">OPC Compare</a>.</p>
+  <p class="back-link">Compare experimental front-detection tuning choices side by side: <a href="sensitivity.html">OPC Sensitivity Analysis</a>.</p>
+  <p class="back-link">A related project: <a href="https://fp-sea.github.io/alenuihaha_wx/" target="_blank" rel="noopener">Alenuihaha Marine Weather Briefing</a>.</p>
+  <table class="time-table">
+    <tr><th></th><th>UTC</th><th>HST</th><th>Pacific</th></tr>
+    <tr><td>Newest 00Z run</td><td>2026-09-26 00:00 UTC</td><td>2026-09-25 14:00 HST</td><td>2026-09-25 17:00 PDT</td></tr>
+    <tr><td>Newest 12Z run</td><td>2026-09-26 12:00 UTC</td><td>2026-09-26 02:00 HST</td><td>2026-09-26 05:00 PDT</td></tr>
+    <tr><td>Generated</td><td>2026-09-26 17:12 UTC</td><td>2026-09-26 07:12 HST</td><td>2026-09-26 10:12 PDT</td></tr>
+  </table>
+  <p class="jump-nav">
+    <a href="#sa">Surface Analysis</a><a href="#p500">500mb</a>
+  </p>
+</header>
+
+<main>
+
+  
+  <div class="section-block" id="sa">
+    <h2 class="tier-title">Surface Analysis</h2>
+    
+      
+      
+      <div class="track">
+        <h3 class="track-title">00Z runs</h3>
+        <div class="column-header" style="grid-template-columns: repeat(8, 1fr);">
+          <div>Sep 23</div><div>Sep 24</div><div>Sep 25</div><div>Sep 26</div><div>Sep 27</div><div>Sep 28</div><div>Sep 29</div><div>Sep 30</div>
+        </div>
+
+        <div class="pinned-row">
+          <span class="pinned-row-label">Surface Analysis (ground truth)</span>
+          <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+            
+              
+              <div class="cell-wrap" style="grid-column: 1;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260923T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260923T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 2;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260924T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260924T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 3;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260925T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 4;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </div>
+
+        
+        
+        <label class="satellite-toggle-row">
+          <input type="checkbox" id="sa-00z-satellite" checked>
+          <span class="satellite-toggle-label">Satellite fusion ground truth</span>
+          <div class="row-cells satellite-row" style="grid-template-columns: repeat(8, 1fr);">
+            
+              
+              <div class="cell-wrap" style="grid-column: 1;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 2;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 3;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 4;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </label>
+        
+
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-00z-run-2026092600" checked>
+  <span class="run-label">Sep 26 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260927T0000Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260928T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260928T0000Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 8;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-00z-run-2026092500" checked>
+  <span class="run-label">Sep 25 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260925T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260926T0000Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260927T0000Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-00z-run-2026092400" checked>
+  <span class="run-label">Sep 24 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260924T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260924T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260925T0000Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260926T0000Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-00z-run-2026092300" checked>
+  <span class="run-label">Sep 23 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 1;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260923T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260923T0000Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260924T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260924T0000Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260925T0000Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+      </div>
+    
+      
+      
+      <div class="track">
+        <h3 class="track-title">12Z runs</h3>
+        <div class="column-header" style="grid-template-columns: repeat(8, 1fr);">
+          <div>Sep 23</div><div>Sep 24</div><div>Sep 25</div><div>Sep 26</div><div>Sep 27</div><div>Sep 28</div><div>Sep 29</div><div>Sep 30</div>
+        </div>
+
+        <div class="pinned-row">
+          <span class="pinned-row-label">Surface Analysis (ground truth)</span>
+          <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+            
+              
+              <div class="cell-wrap" style="grid-column: 1;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260923T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260923T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 2;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260924T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260924T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 3;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260925T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 4;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260926T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </div>
+
+        
+        
+        <label class="satellite-toggle-row">
+          <input type="checkbox" id="sa-12z-satellite" checked>
+          <span class="satellite-toggle-label">Satellite fusion ground truth</span>
+          <div class="row-cells satellite-row" style="grid-template-columns: repeat(8, 1fr);">
+            
+              
+              <div class="cell-wrap" style="grid-column: 1;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 2;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 3;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 4;">
+                
+                
+                
+                
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+              </div>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </label>
+        
+
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-12z-run-2026092612" checked>
+  <span class="run-label">Sep 26 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260926T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>not yet available</span></div>
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>not yet available</span></div>
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 8;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-12z-run-2026092512" checked>
+  <span class="run-label">Sep 25 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260925T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260926T1200Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260927T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260927T1200Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-12z-run-2026092412" checked>
+  <span class="run-label">Sep 24 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260924T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260924T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260925T1200Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260926T1200Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="sa-12z-run-2026092312" checked>
+  <span class="run-label">Sep 23 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 1;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_000h_valid20260923T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_000h_valid20260923T1200Z.gif" alt="Surface Analysis +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_024h_valid20260924T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_024h_valid20260924T1200Z.gif" alt="Surface Analysis +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_surface_analysis_048h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_surface_analysis_048h_valid20260925T1200Z.gif" alt="Surface Analysis +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-suspended"><span>suspended</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+      </div>
+    
+  </div>
+
+  
+  <div class="section-block" id="p500">
+    <h2 class="tier-title">500mb</h2>
+    
+      
+      
+      <div class="track">
+        <h3 class="track-title">00Z runs</h3>
+        <div class="column-header" style="grid-template-columns: repeat(8, 1fr);">
+          <div>Sep 23</div><div>Sep 24</div><div>Sep 25</div><div>Sep 26</div><div>Sep 27</div><div>Sep 28</div><div>Sep 29</div><div>Sep 30</div>
+        </div>
+
+        <div class="pinned-row">
+          <span class="pinned-row-label">500mb (ground truth)</span>
+          <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+            
+              
+              <div class="cell-wrap" style="grid-column: 1;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260923T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260923T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 2;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260924T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260924T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 3;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260925T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 4;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260926T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </div>
+
+        
+
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-00z-run-2026092600" checked>
+  <span class="run-label">Sep 26 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260926T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260927T0000Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260928T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260928T0000Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 8;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-00z-run-2026092500" checked>
+  <span class="run-label">Sep 25 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260925T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260926T0000Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260927T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260927T0000Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-00z-run-2026092400" checked>
+  <span class="run-label">Sep 24 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260924T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260924T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260925T0000Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260926T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260926T0000Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-00z-run-2026092300" checked>
+  <span class="run-label">Sep 23 · 00Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 1;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260923T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260923T0000Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260924T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260924T0000Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260925T0000Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260925T0000Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>no data this cycle</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+      </div>
+    
+      
+      
+      <div class="track">
+        <h3 class="track-title">12Z runs</h3>
+        <div class="column-header" style="grid-template-columns: repeat(8, 1fr);">
+          <div>Sep 23</div><div>Sep 24</div><div>Sep 25</div><div>Sep 26</div><div>Sep 27</div><div>Sep 28</div><div>Sep 29</div><div>Sep 30</div>
+        </div>
+
+        <div class="pinned-row">
+          <span class="pinned-row-label">500mb (ground truth)</span>
+          <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+            
+              
+              <div class="cell-wrap" style="grid-column: 1;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260923T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260923T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 2;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260924T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260924T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 3;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260925T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+              <div class="cell-wrap" style="grid-column: 4;">
+                
+                
+                
+                
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260926T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+              </div>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </div>
+
+        
+
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-12z-run-2026092612" checked>
+  <span class="run-label">Sep 26 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260926T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>not yet available</span></div>
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>not yet available</span></div>
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>not yet available</span></div>
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 8;">
+      
+      
+      
+
+
+<div class="cell-gap cell-gap-neutral"><span>not yet available</span></div>
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-12z-run-2026092512" checked>
+  <span class="run-label">Sep 25 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260925T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260926T1200Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260927T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260927T1200Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_072h_valid20260928T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_072h_valid20260928T1200Z.gif" alt="500mb +72h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 7;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_096h_valid20260929T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_096h_valid20260929T1200Z.gif" alt="500mb +96h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-12z-run-2026092412" checked>
+  <span class="run-label">Sep 24 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260924T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260924T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260925T1200Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260926T1200Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_072h_valid20260927T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_072h_valid20260927T1200Z.gif" alt="500mb +72h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 6;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_096h_valid20260928T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_096h_valid20260928T1200Z.gif" alt="500mb +96h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+          
+          
+<label class="run-row">
+  <input type="checkbox" id="p500-12z-run-2026092312" checked>
+  <span class="run-label">Sep 23 · 12Z run</span>
+  <div class="row-cells" style="grid-template-columns: repeat(8, 1fr);">
+    
+    <div class="cell-wrap" style="grid-column: 1;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_000h_valid20260923T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_000h_valid20260923T1200Z.gif" alt="500mb +0h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">0h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 2;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_024h_valid20260924T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_024h_valid20260924T1200Z.gif" alt="500mb +24h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+24h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 3;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_048h_valid20260925T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_048h_valid20260925T1200Z.gif" alt="500mb +48h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+48h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 4;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_072h_valid20260926T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_072h_valid20260926T1200Z.gif" alt="500mb +72h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+72h</span>
+    </div>
+    
+    <div class="cell-wrap" style="grid-column: 5;">
+      
+      
+      
+
+
+<a class="cell-link" href="opc_truth/opc_500mb_096h_valid20260927T1200Z.gif" target="_blank" rel="noopener">
+  <img class="cell-img" src="opc_truth/opc_500mb_096h_valid20260927T1200Z.gif" alt="500mb +96h" loading="lazy">
+</a>
+
+
+
+      <span class="gt-tag">+96h</span>
+    </div>
+    
+  </div>
+</label>
+        
+      </div>
+    
+  </div>
+
+</main>
+
+</body>
+</html>

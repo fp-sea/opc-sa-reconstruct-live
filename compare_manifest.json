@@ -1,0 +1,1794 @@
+{
+  "generated_at": "2026-09-26T17:14:51Z",
+  "target_map_width_px": 1330,
+  "satellite_loop_framerate_fps": 4,
+  "layout_presets": {
+    "own_render": {
+      "canvas_w": 1643,
+      "canvas_h": 1040,
+      "map_rect": [
+        34.6,
+        15.6,
+        1522.1,
+        972.4
+      ]
+    },
+    "opc_sa": {
+      "canvas_w": 1728,
+      "canvas_h": 1100,
+      "map_rect": [
+        -8.1,
+        -36.2,
+        1727.9,
+        1100.6
+      ]
+    },
+    "opc_500mb_ww": {
+      "canvas_w": 1200,
+      "canvas_h": 764,
+      "map_rect": [
+        -4.8,
+        -21.5,
+        1197.6,
+        764.9
+      ]
+    },
+    "opc_satellite": {
+      "canvas_w": 1719,
+      "canvas_h": 1120,
+      "map_rect": [
+        2.2,
+        0.2,
+        1713.6,
+        1090.2
+      ]
+    },
+    "satellite_loop": {
+      "canvas_w": 1000,
+      "canvas_h": 636,
+      "map_rect": [
+        0,
+        0,
+        1000,
+        636
+      ]
+    }
+  },
+  "products": [
+    {
+      "id": "satellite_sfc",
+      "group": "satellite",
+      "source": "opc",
+      "kind": "opc",
+      "label": "Satellite-Overlaid Surface Analysis",
+      "layout_preset": "opc_satellite"
+    },
+    {
+      "id": "satellite_loop",
+      "group": "satellite_loop",
+      "source": "satellite_loop",
+      "kind": "render",
+      "label": "Satellite IR Loop (24h)",
+      "layout_preset": "satellite_loop"
+    },
+    {
+      "id": "ascat_winds",
+      "group": "ascat",
+      "source": "ascat",
+      "kind": "render",
+      "label": "ASCAT Scatterometer Winds",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "sa_opc",
+      "group": "sa",
+      "source": "opc",
+      "kind": "opc",
+      "label": "Surface Analysis (OPC)",
+      "layout_preset": "opc_sa"
+    },
+    {
+      "id": "sa_gfs",
+      "group": "sa",
+      "source": "gfs",
+      "kind": "render",
+      "label": "Surface Analysis (GFS reconstruction)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "sa_ecmwf",
+      "group": "sa",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "Surface Analysis (ECMWF reconstruction)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "sa_mslp_diff",
+      "group": "sa",
+      "source": "diff",
+      "kind": "render",
+      "label": "MSLP Difference (GFS \u2212 ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "mb500_opc",
+      "group": "500mb",
+      "source": "opc",
+      "kind": "opc",
+      "label": "500mb Analysis (OPC)",
+      "layout_preset": "opc_500mb_ww"
+    },
+    {
+      "id": "mb500_gfs",
+      "group": "500mb",
+      "source": "gfs",
+      "kind": "render",
+      "label": "500mb Analysis (GFS reconstruction)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "mb500_ecmwf",
+      "group": "500mb",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "500mb Analysis (ECMWF reconstruction)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "mb500_diff",
+      "group": "500mb",
+      "source": "diff",
+      "kind": "render",
+      "label": "500mb Height Difference (GFS \u2212 ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "vort500_gfs",
+      "group": "vorticity500",
+      "source": "gfs",
+      "kind": "render",
+      "label": "Vorticity 500mb (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "vort500_ecmwf",
+      "group": "vorticity500",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "Vorticity 500mb (ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "vort500_diff",
+      "group": "vorticity500",
+      "source": "diff",
+      "kind": "render",
+      "label": "Vorticity 500mb Difference (GFS \u2212 ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "windwave_opc",
+      "group": "windwave",
+      "source": "opc",
+      "kind": "opc",
+      "label": "Wind/Wave Analysis (OPC)",
+      "layout_preset": "opc_500mb_ww"
+    },
+    {
+      "id": "windwave_gfs",
+      "group": "windwave",
+      "source": "gfs",
+      "kind": "render",
+      "label": "10m Wind Speed (GFS reconstruction)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "windwave_ecmwf",
+      "group": "windwave",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "10m Wind Speed (ECMWF reconstruction)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "windwave_diff",
+      "group": "windwave",
+      "source": "diff",
+      "kind": "render",
+      "label": "10m Wind Speed Difference (GFS \u2212 ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "sst_gfs",
+      "group": "sst",
+      "source": "gfs",
+      "kind": "render",
+      "label": "Sea Surface Temperature (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "sst_ecmwf",
+      "group": "sst",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "Sea Surface Temperature (ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "sst_diff",
+      "group": "sst",
+      "source": "diff",
+      "kind": "render",
+      "label": "Sea Surface Temperature Difference (GFS \u2212 ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "thickness_gfs",
+      "group": "thickness",
+      "source": "gfs",
+      "kind": "render",
+      "label": "1000\u2013850mb Thickness (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "thickness_ecmwf",
+      "group": "thickness",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "1000\u2013850mb Thickness (ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "thetae_gfs",
+      "group": "thetae",
+      "source": "gfs",
+      "kind": "render",
+      "label": "\u03b8e 850mb (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "thetae_ecmwf",
+      "group": "thetae",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "\u03b8e 850mb (ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "gradmag_gfs",
+      "group": "gradmag",
+      "source": "gfs",
+      "kind": "render",
+      "label": "Gradient Magnitude 850mb \u2014 TFP threshold (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "gradmag_ecmwf",
+      "group": "gradmag",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "Gradient Magnitude 850mb \u2014 TFP threshold (ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "vort850_gfs",
+      "group": "vorticity850",
+      "source": "gfs",
+      "kind": "render",
+      "label": "Vorticity 850mb (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "vort850_ecmwf",
+      "group": "vorticity850",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "Vorticity 850mb (ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "vort850_diff",
+      "group": "vorticity850",
+      "source": "diff",
+      "kind": "render",
+      "label": "Vorticity 850mb Difference (GFS \u2212 ECMWF)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "frontogenesis_gfs",
+      "group": "frontogenesis",
+      "source": "gfs",
+      "kind": "render",
+      "label": "Frontogenesis 850mb (GFS)",
+      "layout_preset": "own_render"
+    },
+    {
+      "id": "frontogenesis_ecmwf",
+      "group": "frontogenesis",
+      "source": "ecmwf",
+      "kind": "render",
+      "label": "Frontogenesis 850mb (ECMWF)",
+      "layout_preset": "own_render"
+    }
+  ],
+  "entries": [
+    {
+      "product_id": "satellite_loop",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "satloop_2026092600_satellite_loop_f000.mp4"
+    },
+    {
+      "product_id": "ascat_winds",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "ascat_2026092600_ascat_f000.png"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-23T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-23T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260923T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-23T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-24T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260924T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-23T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-25T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260925T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-23T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260923T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-24T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260924T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-25T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260925T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-24T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-24T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260924T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-24T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-25T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260925T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-24T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-24T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260924T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-25T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260925T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-25T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-25T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260925T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-25T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-25T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260927T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-25T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260925T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-27T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260927T1200Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_024h_valid20260927T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_048h_valid20260928T0000Z.gif"
+    },
+    {
+      "product_id": "sa_opc",
+      "cycle": "2026-09-26T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_surface_analysis_000h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "sa_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "sa_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "sa_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "sa_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "sa_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "sa_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "sa_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "sa_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "sa_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "sa_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "sa_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "sa_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "sa_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "sa_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "sa_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "sa_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "sa_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "sa_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "sa_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "sa_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "sa_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "sa_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "sa_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "sa_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "sa_mslp_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "mslpdiff_2026092600_f000.png"
+    },
+    {
+      "product_id": "sa_mslp_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "mslpdiff_2026092600_f012.png"
+    },
+    {
+      "product_id": "sa_mslp_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "mslpdiff_2026092600_f024.png"
+    },
+    {
+      "product_id": "sa_mslp_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "mslpdiff_2026092600_f048.png"
+    },
+    {
+      "product_id": "sa_mslp_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "mslpdiff_2026092600_f072.png"
+    },
+    {
+      "product_id": "sa_mslp_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "mslpdiff_2026092600_f096.png"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-23T00:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260923T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-24T00:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260924T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-25T00:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260925T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-23T12:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260923T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-24T12:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260924T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-25T12:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260925T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_500mb_072h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-23T12:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-27T12:00:00Z",
+      "path": "opc_truth/opc_500mb_096h_valid20260927T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-24T00:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260924T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-25T00:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260925T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-24T12:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260924T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-25T12:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260925T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-27T12:00:00Z",
+      "path": "opc_truth/opc_500mb_072h_valid20260927T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-24T12:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-28T12:00:00Z",
+      "path": "opc_truth/opc_500mb_096h_valid20260928T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-25T00:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260925T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260927T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-25T12:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260925T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-27T12:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260927T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-28T12:00:00Z",
+      "path": "opc_truth/opc_500mb_072h_valid20260928T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-25T12:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-29T12:00:00Z",
+      "path": "opc_truth/opc_500mb_096h_valid20260929T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "opc_truth/opc_500mb_024h_valid20260927T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "opc_truth/opc_500mb_048h_valid20260928T0000Z.gif"
+    },
+    {
+      "product_id": "mb500_opc",
+      "cycle": "2026-09-26T12:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "opc_truth/opc_500mb_000h_valid20260926T1200Z.gif"
+    },
+    {
+      "product_id": "mb500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "500mb_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "mb500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "500mb_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "mb500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "500mb_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "mb500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "500mb_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "mb500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "500mb_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "mb500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "500mb_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "mb500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "500mb_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "mb500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "500mb_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "mb500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "500mb_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "mb500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "500mb_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "mb500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "500mb_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "mb500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "500mb_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "mb500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "500mbdiff_2026092600_f000.png"
+    },
+    {
+      "product_id": "mb500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "500mbdiff_2026092600_f012.png"
+    },
+    {
+      "product_id": "mb500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "500mbdiff_2026092600_f024.png"
+    },
+    {
+      "product_id": "mb500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "500mbdiff_2026092600_f048.png"
+    },
+    {
+      "product_id": "mb500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "500mbdiff_2026092600_f072.png"
+    },
+    {
+      "product_id": "mb500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "500mbdiff_2026092600_f096.png"
+    },
+    {
+      "product_id": "vort500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "vort500_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "vort500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "vort500_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "vort500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "vort500_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "vort500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "vort500_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "vort500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "vort500_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "vort500_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "vort500_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "vort500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "vort500_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "vort500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "vort500_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "vort500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "vort500_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "vort500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "vort500_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "vort500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "vort500_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "vort500_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "vort500_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "vort500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "vort500diff_2026092600_f000.png"
+    },
+    {
+      "product_id": "vort500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "vort500diff_2026092600_f012.png"
+    },
+    {
+      "product_id": "vort500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "vort500diff_2026092600_f024.png"
+    },
+    {
+      "product_id": "vort500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "vort500diff_2026092600_f048.png"
+    },
+    {
+      "product_id": "vort500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "vort500diff_2026092600_f072.png"
+    },
+    {
+      "product_id": "vort500_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "vort500diff_2026092600_f096.png"
+    },
+    {
+      "product_id": "windwave_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "opc_truth/opc_wind_wave_000h_valid20260926T0000Z.gif"
+    },
+    {
+      "product_id": "windwave_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "opc_truth/opc_wind_wave_024h_valid20260927T0000Z.gif"
+    },
+    {
+      "product_id": "windwave_opc",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "opc_truth/opc_wind_wave_048h_valid20260928T0000Z.gif"
+    },
+    {
+      "product_id": "windwave_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "wind10m_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "windwave_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "wind10m_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "windwave_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "wind10m_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "windwave_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "wind10m_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "windwave_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "wind10m_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "windwave_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "wind10m_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "windwave_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "wind10m_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "windwave_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "wind10m_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "windwave_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "wind10m_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "windwave_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "wind10m_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "windwave_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "wind10m_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "windwave_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "wind10m_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "windwave_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "wind10mdiff_2026092600_f000.png"
+    },
+    {
+      "product_id": "windwave_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "wind10mdiff_2026092600_f012.png"
+    },
+    {
+      "product_id": "windwave_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "wind10mdiff_2026092600_f024.png"
+    },
+    {
+      "product_id": "windwave_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "wind10mdiff_2026092600_f048.png"
+    },
+    {
+      "product_id": "windwave_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "wind10mdiff_2026092600_f072.png"
+    },
+    {
+      "product_id": "windwave_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "wind10mdiff_2026092600_f096.png"
+    },
+    {
+      "product_id": "sst_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "sst_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "sst_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "sst_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "sst_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "sst_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "sst_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "sst_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "sst_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "sst_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "sst_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "sst_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "sst_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "sst_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "sst_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "sst_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "sst_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "sst_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "sst_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "sst_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "sst_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "sst_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "sst_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "sst_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "sst_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "sstdiff_2026092600_f000.png"
+    },
+    {
+      "product_id": "sst_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "sstdiff_2026092600_f012.png"
+    },
+    {
+      "product_id": "sst_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "sstdiff_2026092600_f024.png"
+    },
+    {
+      "product_id": "sst_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "sstdiff_2026092600_f048.png"
+    },
+    {
+      "product_id": "sst_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "sstdiff_2026092600_f072.png"
+    },
+    {
+      "product_id": "sst_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "sstdiff_2026092600_f096.png"
+    },
+    {
+      "product_id": "thickness_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "thickness_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "thickness_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "thickness_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "thickness_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "thickness_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "thickness_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "thickness_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "thickness_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "thickness_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "thickness_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "thickness_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "thickness_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "thickness_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "thickness_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "thickness_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "thickness_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "thickness_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "thickness_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "thickness_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "thickness_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "thickness_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "thickness_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "thickness_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "thetae_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "thetae_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "thetae_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "thetae_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "thetae_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "thetae_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "thetae_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "thetae_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "thetae_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "thetae_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "thetae_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "thetae_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "thetae_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "thetae_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "thetae_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "thetae_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "thetae_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "thetae_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "thetae_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "thetae_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "thetae_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "thetae_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "thetae_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "thetae_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "gradmag_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "gradmag_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "gradmag_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "gradmag_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "gradmag_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "gradmag_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "gradmag_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "gradmag_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "gradmag_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "gradmag_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "gradmag_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "gradmag_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "gradmag_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "gradmag_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "gradmag_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "gradmag_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "gradmag_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "gradmag_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "gradmag_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "gradmag_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "gradmag_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "gradmag_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "gradmag_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "gradmag_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "vort850_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "vort850_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "vort850_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "vort850_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "vort850_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "vort850_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "vort850_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "vort850_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "vort850_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "vort850_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "vort850_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "vort850_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "vort850_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "vort850_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "vort850_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "vort850_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "vort850_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "vort850_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "vort850_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "vort850_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "vort850_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "vort850_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "vort850_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "vort850_2026092600_ecmwf_f096.png"
+    },
+    {
+      "product_id": "vort850_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "vort850diff_2026092600_f000.png"
+    },
+    {
+      "product_id": "vort850_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "vort850diff_2026092600_f012.png"
+    },
+    {
+      "product_id": "vort850_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "vort850diff_2026092600_f024.png"
+    },
+    {
+      "product_id": "vort850_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "vort850diff_2026092600_f048.png"
+    },
+    {
+      "product_id": "vort850_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "vort850diff_2026092600_f072.png"
+    },
+    {
+      "product_id": "vort850_diff",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "vort850diff_2026092600_f096.png"
+    },
+    {
+      "product_id": "frontogenesis_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "frontogenesis_2026092600_gfs_f000.png"
+    },
+    {
+      "product_id": "frontogenesis_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "frontogenesis_2026092600_gfs_f012.png"
+    },
+    {
+      "product_id": "frontogenesis_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "frontogenesis_2026092600_gfs_f024.png"
+    },
+    {
+      "product_id": "frontogenesis_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "frontogenesis_2026092600_gfs_f048.png"
+    },
+    {
+      "product_id": "frontogenesis_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "frontogenesis_2026092600_gfs_f072.png"
+    },
+    {
+      "product_id": "frontogenesis_gfs",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "frontogenesis_2026092600_gfs_f096.png"
+    },
+    {
+      "product_id": "frontogenesis_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 0,
+      "valid": "2026-09-26T00:00:00Z",
+      "path": "frontogenesis_2026092600_ecmwf_f000.png"
+    },
+    {
+      "product_id": "frontogenesis_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 12,
+      "valid": "2026-09-26T12:00:00Z",
+      "path": "frontogenesis_2026092600_ecmwf_f012.png"
+    },
+    {
+      "product_id": "frontogenesis_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 24,
+      "valid": "2026-09-27T00:00:00Z",
+      "path": "frontogenesis_2026092600_ecmwf_f024.png"
+    },
+    {
+      "product_id": "frontogenesis_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 48,
+      "valid": "2026-09-28T00:00:00Z",
+      "path": "frontogenesis_2026092600_ecmwf_f048.png"
+    },
+    {
+      "product_id": "frontogenesis_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 72,
+      "valid": "2026-09-29T00:00:00Z",
+      "path": "frontogenesis_2026092600_ecmwf_f072.png"
+    },
+    {
+      "product_id": "frontogenesis_ecmwf",
+      "cycle": "2026-09-26T00:00:00Z",
+      "lead_h": 96,
+      "valid": "2026-09-30T00:00:00Z",
+      "path": "frontogenesis_2026092600_ecmwf_f096.png"
+    }
+  ]
+}

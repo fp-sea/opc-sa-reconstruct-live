@@ -1,0 +1,2240 @@
+<!--
+  Sensitivity-analysis page -- Stage 4 of the front-detection dial-in task
+  (CLAUDE.md 2026-07-21). Visually compares EXPERIMENTAL front-detection
+  output (src/features/detect_fronts_experimental.py, never imported by
+  production) against the real PRODUCTION baseline
+  (src/features/detect_fronts_tfp.py) -- and, at the top of the page, the
+  real ground-truth OPC-published chart itself (2026-07-21 follow-up,
+  direct user request -- a real analyst-drawn chart is the closest thing
+  this project has to ground truth, more direct than prose test-case
+  callouts) -- across a small, already-rendered 2D grid
+  (grad_threshold_percentile rows x front_speed_threshold_ms columns) --
+  per the guidance doc's own explicit "faceted small multiples, not a
+  hypercube" instruction, every OTHER variable (hour/model/thermal field/
+  K1-style gate) is a radio-button selector that swaps which one grid is
+  showing, not an added grid dimension. The ground-truth chart reacts only
+  to the hour selector (OPC publishes one chart per lead, not one per NWP
+  model).
+
+  Self-contained (own :root block, copied from hsf_explorer.html.j2/
+  report.html.j2 -- this project has no Jinja template-inheritance
+  mechanism, every .html.j2 is independent by convention). Zero JavaScript:
+  mirrors hsf_explorer.html.j2's own real, working radio + :checked
+  sibling-combinator pattern directly (that page already found and fixed
+  the "~ * vs plain ~" combinator gotcha this template also has to get
+  right -- see the CSS comments below for exactly which form applies where).
+
+  All 4 radio groups (hour/model/thermal/k1) are simple, independent
+  siblings living at the very top of .sensitivity-page, in a FIXED order
+  matching the generated CSS selector below -- exactly one of the 16
+  (2 hours x 2 models x 2 thermals x 2 k1 states) grids is shown at a time,
+  selected by a single compound selector chaining all 4 :checked states.
+
+  "enabled" kill switch (2026-07-22): when False, the caller
+  (sensitivity_page.py) passes no manifest/grids at all -- every loop below
+  that reads manifest data would raise Jinja's UndefinedError if reached,
+  so the ENTIRE manifest-driven CSS block and body content is wrapped in
+  a top-level enabled check, with a plain static placeholder in the
+  disabled branch. Only the truly static preamble (doctype/head/:root/
+  base rules, no manifest reference) stays unconditional.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPC Sensitivity Analysis</title>
+<style>
+:root {
+  --bg: #12161c;
+  --panel-bg: #1a1f28;
+  --border: #2a323f;
+  --text: #d7dce2;
+  --text-muted: #8a94a3;
+  --accent-amber: #d99b3f;
+  --accent-amber-bg: #3a2f1a;
+  --link: #6fb3ff;
+  --accent-teal: #1D9E75;
+  --accent-teal-bg: #0f2e24;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; padding: 0 1.25rem 3rem; }
+.sensitivity-page { max-width: 1500px; margin: 0 auto; }
+a { color: var(--link); }
+
+.masthead { padding: 1.25rem 0 1rem; border-bottom: 1px solid var(--border); }
+.masthead h1 { margin: 0 0 0.4rem; font-size: 1.4rem; }
+.disclaimer { color: var(--text-muted); font-size: 0.85rem; margin: 0.25rem 0 0.5rem; }
+.top-links { color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.4rem; }
+.sens-disabled-notice { border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; margin: 1.5rem 0; background: var(--panel-bg); color: var(--text-muted); }
+
+
+/* --- "How to read this page" explainer, own bordered block matching
+   .sens-baseline-row/.sens-gt-panel's existing panel-bg/border language. --- */
+.sens-explainer { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.1rem; margin: 1rem 0; background: var(--panel-bg); font-size: 0.86rem; line-height: 1.5; }
+.sens-explainer h2 { margin: 0 0 0.6rem; font-size: 0.95rem; }
+.sens-explainer p { margin: 0 0 0.6rem; }
+.sens-explainer p:last-child { margin-bottom: 0; }
+.sens-explainer dl { margin: 0.4rem 0 0; }
+.sens-explainer dt { color: var(--accent-teal); font-weight: 600; margin-top: 0.5rem; }
+.sens-explainer dd { margin: 0.15rem 0 0; color: var(--text-muted); }
+.sens-explainer code { background: rgba(255,255,255,0.06); padding: 0.05rem 0.3rem; border-radius: 3px; }
+.sens-explainer .sens-note { color: var(--accent-amber); }
+
+/* --- Radio selectors: hour / model / thermal / k1 --- */
+.sens-radio { position: absolute; opacity: 0; pointer-events: none; }
+.sens-selector-row { display: flex; align-items: center; gap: 0.6rem; margin: 0.6rem 0; flex-wrap: wrap; }
+.sens-selector-row .sens-selector-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 0.4rem; }
+.sens-selector-row label.sens-option { cursor: pointer; padding: 0.35rem 0.75rem; border: 1px solid var(--border); border-radius: 4px; background: var(--panel-bg); font-size: 0.85rem; }
+
+#hour-0:checked ~ * label.sens-option[for="hour-0"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+#hour-24:checked ~ * label.sens-option[for="hour-24"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+
+#model-gfs:checked ~ * label.sens-option[for="model-gfs"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+#model-ecmwf:checked ~ * label.sens-option[for="model-ecmwf"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+
+#thermal-theta_e:checked ~ * label.sens-option[for="thermal-theta_e"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+#thermal-theta_w:checked ~ * label.sens-option[for="thermal-theta_w"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+
+#k1-off:checked ~ * label.sens-option[for="k1-off"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+#k1-on:checked ~ * label.sens-option[for="k1-on"] { background: var(--link); color: #0a0d12; border-color: var(--link); }
+
+
+/* --- Grid show/hide: exactly one of the 16 (hour,model,thermal,k1)
+   grids is visible, selected by a single compound selector chaining all
+   4 :checked states. The radios are direct siblings of each other (all
+   living at the top of .sensitivity-page, in this exact order); .sens-grid
+   divs live inside #sens-grids, a LATER sibling of the last radio -- so
+   the final hop needs "~ *" (reach a descendant of a later sibling),
+   while the 3 hops BETWEEN radios need plain "~" (each target IS the
+   direct/general sibling itself, not a descendant) -- same combinator
+   distinction hsf_explorer.html.j2's own CSS comments already document. */
+.sens-grid { display: none; }
+
+#hour-0:checked ~ #model-gfs:checked ~ #thermal-theta_e:checked ~ #k1-off:checked ~ * #grid-gfs-0-theta_e-off { display: block; }
+
+#hour-0:checked ~ #model-gfs:checked ~ #thermal-theta_e:checked ~ #k1-on:checked ~ * #grid-gfs-0-theta_e-on { display: block; }
+
+#hour-0:checked ~ #model-gfs:checked ~ #thermal-theta_w:checked ~ #k1-off:checked ~ * #grid-gfs-0-theta_w-off { display: block; }
+
+#hour-0:checked ~ #model-gfs:checked ~ #thermal-theta_w:checked ~ #k1-on:checked ~ * #grid-gfs-0-theta_w-on { display: block; }
+
+#hour-24:checked ~ #model-gfs:checked ~ #thermal-theta_e:checked ~ #k1-off:checked ~ * #grid-gfs-24-theta_e-off { display: block; }
+
+#hour-24:checked ~ #model-gfs:checked ~ #thermal-theta_e:checked ~ #k1-on:checked ~ * #grid-gfs-24-theta_e-on { display: block; }
+
+#hour-24:checked ~ #model-gfs:checked ~ #thermal-theta_w:checked ~ #k1-off:checked ~ * #grid-gfs-24-theta_w-off { display: block; }
+
+#hour-24:checked ~ #model-gfs:checked ~ #thermal-theta_w:checked ~ #k1-on:checked ~ * #grid-gfs-24-theta_w-on { display: block; }
+
+#hour-0:checked ~ #model-ecmwf:checked ~ #thermal-theta_e:checked ~ #k1-off:checked ~ * #grid-ecmwf-0-theta_e-off { display: block; }
+
+#hour-0:checked ~ #model-ecmwf:checked ~ #thermal-theta_e:checked ~ #k1-on:checked ~ * #grid-ecmwf-0-theta_e-on { display: block; }
+
+#hour-0:checked ~ #model-ecmwf:checked ~ #thermal-theta_w:checked ~ #k1-off:checked ~ * #grid-ecmwf-0-theta_w-off { display: block; }
+
+#hour-0:checked ~ #model-ecmwf:checked ~ #thermal-theta_w:checked ~ #k1-on:checked ~ * #grid-ecmwf-0-theta_w-on { display: block; }
+
+#hour-24:checked ~ #model-ecmwf:checked ~ #thermal-theta_e:checked ~ #k1-off:checked ~ * #grid-ecmwf-24-theta_e-off { display: block; }
+
+#hour-24:checked ~ #model-ecmwf:checked ~ #thermal-theta_e:checked ~ #k1-on:checked ~ * #grid-ecmwf-24-theta_e-on { display: block; }
+
+#hour-24:checked ~ #model-ecmwf:checked ~ #thermal-theta_w:checked ~ #k1-off:checked ~ * #grid-ecmwf-24-theta_w-off { display: block; }
+
+#hour-24:checked ~ #model-ecmwf:checked ~ #thermal-theta_w:checked ~ #k1-on:checked ~ * #grid-ecmwf-24-theta_w-on { display: block; }
+
+
+.sens-baseline-row { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
+.sens-baseline-row img { width: 320px; max-width: 40vw; border: 1px solid var(--accent-amber); border-radius: 3px; display: block; }
+.sens-baseline-label { font-size: 0.8rem; color: var(--accent-amber); text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.4rem; }
+.sens-baseline-note { font-size: 0.82rem; color: var(--text-muted); max-width: 32rem; }
+
+.sens-table { border-collapse: collapse; width: 100%; }
+.sens-table th, .sens-table td { border: 1px solid var(--border); padding: 0.4rem; text-align: center; vertical-align: top; }
+.sens-table th { background: var(--panel-bg); font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+.sens-table img { width: 100%; display: block; border-radius: 3px; }
+.sens-cell-missing { color: var(--text-muted); font-size: 0.75rem; padding: 2rem 0.5rem; }
+.sens-row-label { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
+
+/* --- Ground truth: the real OPC-published chart, shown once per hour
+   (independent of model/thermal/k1 -- OPC only ever publishes one chart
+   per lead, never one per NWP model). Teal accent deliberately distinct
+   from the production baseline's amber below, matching this project's
+   existing "real OPC" visual language elsewhere (e.g. reference.html's own
+   tag-official styling). */
+.sens-gt-panel { display: none; border: 1px solid var(--accent-teal); border-radius: 6px; padding: 1rem; margin: 1rem 0; background: var(--panel-bg); }
+.sens-gt-label { font-size: 0.8rem; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.6rem; font-weight: 600; }
+.sens-gt-panel img { max-width: 560px; width: 100%; border-radius: 3px; display: block; }
+.sens-gt-missing { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+
+#hour-0:checked ~ * #gt-0h { display: block; }
+
+#hour-24:checked ~ * #gt-24h { display: block; }
+
+
+</style>
+</head>
+<body>
+<div class="sensitivity-page">
+
+
+  
+  <input class="sens-radio" type="radio" name="sens-hour" id="hour-0" checked>
+  
+  <input class="sens-radio" type="radio" name="sens-hour" id="hour-24">
+  
+  
+  <input class="sens-radio" type="radio" name="sens-model" id="model-gfs" checked>
+  
+  <input class="sens-radio" type="radio" name="sens-model" id="model-ecmwf">
+  
+  
+  <input class="sens-radio" type="radio" name="sens-thermal" id="thermal-theta_e" checked>
+  
+  <input class="sens-radio" type="radio" name="sens-thermal" id="thermal-theta_w">
+  
+  
+  <input class="sens-radio" type="radio" name="sens-k1" id="k1-off" checked>
+  
+  <input class="sens-radio" type="radio" name="sens-k1" id="k1-on">
+  
+
+  <header class="masthead">
+    <h1>OPC Sensitivity Analysis</h1>
+    <p class="disclaimer">RECONSTRUCTION &mdash; not an official OPC product. Compares an EXPERIMENTAL
+    front-detection module (never used by the live daily gallery) against the real PRODUCTION detector and
+    the real ground-truth OPC-published chart, across a real cycle (<code>2026-07-19T00:00:00Z</code>) --
+    this page shows real rendered charts, it does not compute or display any pass/fail accuracy score.</p>
+    <p class="top-links">The daily reconstructed gallery: <a href="index.html">OPC North Pacific Surface Analysis &mdash; Reconstruction</a>.</p>
+    <p class="top-links">Freely pick any two products/runs/leads to compare side by side or overlaid: <a href="compare.html">OPC Compare</a>.</p>
+    <p class="top-links">See how recent forecast runs compared to what actually happened: <a href="consistency.html">OPC North Pacific &mdash; Run Consistency</a>.</p>
+  </header>
+
+  <div class="sens-explainer">
+    <h2>How to read this page</h2>
+    <p>The live daily gallery's Surface Analysis panel &mdash; what everyone actually sees &mdash; is
+    produced by <code>detect_fronts_tfp</code> at its real, tuned-and-verified defaults: <strong>&theta;e
+    (theta-e)</strong> as the thermal field, an adaptive gradient-magnitude threshold (strict at the
+    98th percentile, relaxed to the 65th percentile within
+    ~650km of a detected low), and <strong>wind-shift classification</strong> &mdash; a front's cold/warm/
+    stationary type is decided by the 850mb wind's own cross-front component, not by how fast the front
+    itself is moving. The amber-bordered "Production baseline" panel below always shows exactly this, for
+    whichever lead/model is selected, unaffected by any toggle on this page.</p>
+    <p class="sens-note">Every cell in the grid to its right, however, uses a DIFFERENT classification
+    method &mdash; K3 front-speed classification, not wind-shift &mdash; so no grid cell, not even the
+    98th-percentile row, reproduces what production actually
+    renders. The grid compares K3 against itself across percentile/speed-threshold combinations; the
+    baseline panel is the fixed reference point, not a member of the grid.</p>
+    <dl>
+      <dt>grad_threshold_percentile (grid rows)</dt>
+      <dd>How selective the detector is about calling a temperature gradient sharp enough to plot as a
+      front at all &mdash; higher = only the very strongest gradients qualify. Production's own strict
+      threshold is 98 (relaxing to 65 near a low); the grid also
+      sweeps 50, 65, 80, more permissive values
+      the academic literature suggests as alternatives.</dd>
+      <dt>front_speed_threshold_ms (grid columns) &mdash; "K3"</dt>
+      <dd>The speed (m/s) a front's own gradient-magnitude ridge must clear, by this experimental measure,
+      to be classified as moving (cold/warm) rather than stationary. Three real, independently-sourced
+      anchors, not one guess: <strong>1.5 m/s</strong> (the front-detection literature's own commonly-cited
+      value), <strong>3.0 m/s</strong> (production's own wind-shift threshold, reused here only as a
+      convenient middle column for comparison &mdash; NOT the same physical quantity as K3), and
+      <strong>5.144 m/s</strong> (10 knots, the OPC Unified Surface Analysis Manual's own literal
+      stationary-front definition).</dd>
+      <dt>Thermal field</dt>
+      <dd><strong>&theta;e</strong> (theta-e, equivalent potential temperature) is production's own choice.
+      <strong>&theta;w</strong> (theta-w, wet-bulb potential temperature) is the academic literature's more
+      common choice for this method &mdash; the NWS manual specifically endorses &theta;e for oceanic
+      domains instead, so this is a genuinely open, unresolved tension, not settled by this page. See
+      <a href="reference.html#concepts">the reference guide</a> for the physical distinction.</dd>
+      <dt>K1 gate</dt>
+      <dd><strong>off</strong> matches production (no pre-filter). <strong>on</strong> adds an extra filter
+      that drops the weakest 25% of the raw TFP field's own magnitude BEFORE the front line is even traced
+      &mdash; a literature-suggested threshold. Real, counter-intuitive finding from testing this: it can
+      occasionally INCREASE the final front count rather than reduce it, by fragmenting one continuous
+      front into several shorter pieces that each independently re-qualify (see
+      <code>detect_fronts_experimental.py</code>'s own docstring for the measured numbers).</dd>
+    </dl>
+  </div>
+
+  <div id="sens-ground-truth">
+    
+    
+    <div class="sens-gt-panel" id="gt-0h">
+      <p class="sens-gt-label">Ground truth &mdash; real OPC Surface Analysis (+0h)</p>
+      
+      <img src="sensitivity_examples/ground_truth_000h.gif" alt="Real OPC Surface Analysis +0h">
+      
+    </div>
+    
+    
+    <div class="sens-gt-panel" id="gt-24h">
+      <p class="sens-gt-label">Ground truth &mdash; real OPC Surface Analysis (+24h)</p>
+      
+      <img src="sensitivity_examples/ground_truth_024h.gif" alt="Real OPC Surface Analysis +24h">
+      
+    </div>
+    
+  </div>
+
+  <div class="sens-selector-row">
+    <span class="sens-selector-label">Lead:</span>
+    <label class="sens-option" for="hour-0">+0h</label><label class="sens-option" for="hour-24">+24h</label>
+    <span class="sens-selector-label">Model:</span>
+    <label class="sens-option" for="model-gfs">GFS</label><label class="sens-option" for="model-ecmwf">ECMWF</label>
+    <span class="sens-selector-label">Thermal field:</span>
+    <label class="sens-option" for="thermal-theta_e">θe</label><label class="sens-option" for="thermal-theta_w">θw</label>
+    <span class="sens-selector-label">K1 gate:</span>
+    <label class="sens-option" for="k1-off">off</label><label class="sens-option" for="k1-on">on</label>
+  </div>
+
+  <div id="sens-grids">
+    
+    <div class="sens-grid" id="grid-gfs-0-theta_e-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-0-theta_e-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-0-theta_w-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-0-theta_w-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-24-theta_e-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-24-theta_e-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-24-theta_w-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-gfs-24-theta_w-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_gfs_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-0-theta_e-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-0-theta_e-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-0-theta_w-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-0-theta_w-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_000h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-24-theta_e-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-24-theta_e-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-24-theta_w-off">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="sens-grid" id="grid-ecmwf-24-theta_w-on">
+
+      <div class="sens-baseline-row">
+        
+        <img src="sensitivity_examples/baseline_ecmwf_024h.png" alt="Production baseline">
+        
+        <div>
+          <p class="sens-baseline-label">Production baseline (detect_fronts_tfp, real tuned defaults)</p>
+          <p class="sens-baseline-note">Fixed reference panel for this lead/model &mdash; unaffected by the
+          thermal-field/K1/percentile/K3 selectors, since it always shows what the live daily gallery
+          actually renders today. Compare the grid on the right against this to see how far each
+          experimental setting drifts from production.</p>
+        </div>
+      </div>
+
+      <table class="sens-table">
+        <thead>
+          <tr>
+            <th>grad_threshold_percentile &darr; / front_speed_threshold_ms &rarr;</th>
+            <th>1.500 m/s</th><th>3.000 m/s</th><th>5.144 m/s</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <th class="sens-row-label">50th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct50_k31.500.png" alt="pct=50.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct50_k33.000.png" alt="pct=50.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct50_k35.144.png" alt="pct=50.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">65th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct65_k31.500.png" alt="pct=65.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct65_k33.000.png" alt="pct=65.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct65_k35.144.png" alt="pct=65.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">80th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct80_k31.500.png" alt="pct=80.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct80_k33.000.png" alt="pct=80.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct80_k35.144.png" alt="pct=80.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+          <tr>
+            <th class="sens-row-label">98th pct</th>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct98_k31.500.png" alt="pct=98.0 k3=1.5">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct98_k33.000.png" alt="pct=98.0 k3=3.0">
+              
+            </td>
+            
+            <td>
+              
+              <img src="sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct98_k35.144.png" alt="pct=98.0 k3=5.144">
+              
+            </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+
+    </div>
+    
+  </div>
+
+
+</div>
+</body>
+</html>
