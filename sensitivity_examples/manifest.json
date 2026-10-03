@@ -1,0 +1,267 @@
+{
+  "generated_at": "2026-07-21T22:31:50Z",
+  "cycle": "2026-07-19T00:00:00Z",
+  "hours": [
+    0,
+    24
+  ],
+  "models": [
+    "gfs",
+    "ecmwf"
+  ],
+  "thermals": [
+    "theta_e",
+    "theta_w"
+  ],
+  "k1_states": [
+    "off",
+    "on"
+  ],
+  "percentiles": [
+    50.0,
+    65.0,
+    80.0,
+    98.0
+  ],
+  "k3_thresholds": [
+    1.5,
+    3.0,
+    5.144
+  ],
+  "baselines": {
+    "gfs|0": "sensitivity_examples/baseline_gfs_000h.png",
+    "ecmwf|0": "sensitivity_examples/baseline_ecmwf_000h.png",
+    "gfs|24": "sensitivity_examples/baseline_gfs_024h.png",
+    "ecmwf|24": "sensitivity_examples/baseline_ecmwf_024h.png"
+  },
+  "cells": {
+    "gfs|0|theta_e|off": {
+      "50|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1off_pct98_k35.144.png"
+    },
+    "gfs|0|theta_e|on": {
+      "50|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_000h_theta_e_k1on_pct98_k35.144.png"
+    },
+    "gfs|0|theta_w|off": {
+      "50|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1off_pct98_k35.144.png"
+    },
+    "gfs|0|theta_w|on": {
+      "50|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_000h_theta_w_k1on_pct98_k35.144.png"
+    },
+    "ecmwf|0|theta_e|off": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1off_pct98_k35.144.png"
+    },
+    "ecmwf|0|theta_e|on": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_e_k1on_pct98_k35.144.png"
+    },
+    "ecmwf|0|theta_w|off": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1off_pct98_k35.144.png"
+    },
+    "ecmwf|0|theta_w|on": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_000h_theta_w_k1on_pct98_k35.144.png"
+    },
+    "gfs|24|theta_e|off": {
+      "50|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1off_pct98_k35.144.png"
+    },
+    "gfs|24|theta_e|on": {
+      "50|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_024h_theta_e_k1on_pct98_k35.144.png"
+    },
+    "gfs|24|theta_w|off": {
+      "50|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1off_pct98_k35.144.png"
+    },
+    "gfs|24|theta_w|on": {
+      "50|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_gfs_024h_theta_w_k1on_pct98_k35.144.png"
+    },
+    "ecmwf|24|theta_e|off": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1off_pct98_k35.144.png"
+    },
+    "ecmwf|24|theta_e|on": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_e_k1on_pct98_k35.144.png"
+    },
+    "ecmwf|24|theta_w|off": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1off_pct98_k35.144.png"
+    },
+    "ecmwf|24|theta_w|on": {
+      "50|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct50_k31.500.png",
+      "50|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct50_k33.000.png",
+      "50|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct50_k35.144.png",
+      "65|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct65_k31.500.png",
+      "65|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct65_k33.000.png",
+      "65|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct65_k35.144.png",
+      "80|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct80_k31.500.png",
+      "80|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct80_k33.000.png",
+      "80|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct80_k35.144.png",
+      "98|1.500": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct98_k31.500.png",
+      "98|3.000": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct98_k33.000.png",
+      "98|5.144": "sensitivity_examples/sens_ecmwf_024h_theta_w_k1on_pct98_k35.144.png"
+    }
+  },
+  "ground_truth": {
+    "0": "sensitivity_examples/ground_truth_000h.gif",
+    "24": "sensitivity_examples/ground_truth_024h.gif"
+  }
+}
