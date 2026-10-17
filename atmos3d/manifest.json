@@ -1,0 +1,6626 @@
+{
+ "generated_at": "2026-10-17T05:12:35Z",
+ "reference_cycle": "2026-10-16T12:00:00Z",
+ "models": [
+  "gfs",
+  "ecmwf"
+ ],
+ "leads_h": [
+  -24,
+  -21,
+  -18,
+  -15,
+  -12,
+  -9,
+  -6,
+  -3,
+  0,
+  3,
+  6,
+  9,
+  12,
+  15,
+  18,
+  21,
+  24,
+  27,
+  30,
+  33,
+  36,
+  39,
+  42,
+  45,
+  48,
+  51,
+  54,
+  57,
+  60,
+  63,
+  66,
+  69,
+  72,
+  75,
+  78,
+  81,
+  84,
+  87,
+  90,
+  93,
+  96
+ ],
+ "valid_times": [
+  "2026-10-15T12:00:00Z",
+  "2026-10-15T15:00:00Z",
+  "2026-10-15T18:00:00Z",
+  "2026-10-15T21:00:00Z",
+  "2026-10-16T00:00:00Z",
+  "2026-10-16T03:00:00Z",
+  "2026-10-16T06:00:00Z",
+  "2026-10-16T09:00:00Z",
+  "2026-10-16T12:00:00Z",
+  "2026-10-16T15:00:00Z",
+  "2026-10-16T18:00:00Z",
+  "2026-10-16T21:00:00Z",
+  "2026-10-17T00:00:00Z",
+  "2026-10-17T03:00:00Z",
+  "2026-10-17T06:00:00Z",
+  "2026-10-17T09:00:00Z",
+  "2026-10-17T12:00:00Z",
+  "2026-10-17T15:00:00Z",
+  "2026-10-17T18:00:00Z",
+  "2026-10-17T21:00:00Z",
+  "2026-10-18T00:00:00Z",
+  "2026-10-18T03:00:00Z",
+  "2026-10-18T06:00:00Z",
+  "2026-10-18T09:00:00Z",
+  "2026-10-18T12:00:00Z",
+  "2026-10-18T15:00:00Z",
+  "2026-10-18T18:00:00Z",
+  "2026-10-18T21:00:00Z",
+  "2026-10-19T00:00:00Z",
+  "2026-10-19T03:00:00Z",
+  "2026-10-19T06:00:00Z",
+  "2026-10-19T09:00:00Z",
+  "2026-10-19T12:00:00Z",
+  "2026-10-19T15:00:00Z",
+  "2026-10-19T18:00:00Z",
+  "2026-10-19T21:00:00Z",
+  "2026-10-20T00:00:00Z",
+  "2026-10-20T03:00:00Z",
+  "2026-10-20T06:00:00Z",
+  "2026-10-20T09:00:00Z",
+  "2026-10-20T12:00:00Z"
+ ],
+ "levels": [
+  1000,
+  925,
+  850,
+  700,
+  500,
+  300,
+  250
+ ],
+ "grid": {
+  "lat0": 65.0,
+  "dlat": -0.5,
+  "nlat": 99,
+  "lon0": 135.0,
+  "dlon": 0.5,
+  "nlon": 221
+ },
+ "surface_fields": [
+  "mslp",
+  "t2m",
+  "u10",
+  "v10",
+  "psfc"
+ ],
+ "level_fields": [
+  "gh",
+  "t",
+  "u",
+  "v",
+  "r"
+ ],
+ "projection": {
+  "proj": "merc",
+  "lon_0": 180,
+  "ellps": "WGS84",
+  "units": "km",
+  "control_points": [
+   [
+    16.0,
+    135.0,
+    -5009.377,
+    1792.952
+   ],
+   [
+    65.0,
+    245.0,
+    7235.767,
+    9569.603
+   ],
+   [
+    21.3,
+    202.14,
+    2464.614,
+    2412.172
+   ],
+   [
+    57.8,
+    207.6,
+    3072.418,
+    7889.232
+   ],
+   [
+    35.0,
+    180.0,
+    0.0,
+    4139.373
+   ],
+   [
+    47.6,
+    237.7,
+    6423.135,
+    6008.996
+   ]
+  ]
+ },
+ "ground": {
+  "file": "ground.png",
+  "x_west": -5009.377085697311,
+  "x_east": 7235.766901562784,
+  "y_south": 1792.9516967466936,
+  "y_north": 9569.603113292382,
+  "width_px": 4096,
+  "height_px": 2601
+ },
+ "coast": "coast.json",
+ "world": {
+  "file": "world.png",
+  "width_px": 4096,
+  "height_px": 2048
+ },
+ "satellite": {
+  "band": "infrared ~10.3 um (GOES-18 C13 + Himawari-9 B13)",
+  "vmin_k": 190.0,
+  "vmax_k": 300.0,
+  "frames": [
+   {
+    "file": "sat/frame_000.jpg",
+    "time": "2026-10-15T12:00:00Z"
+   },
+   {
+    "file": "sat/frame_001.jpg",
+    "time": "2026-10-15T12:20:00Z"
+   },
+   {
+    "file": "sat/frame_002.jpg",
+    "time": "2026-10-15T12:40:00Z"
+   },
+   {
+    "file": "sat/frame_003.jpg",
+    "time": "2026-10-15T13:00:00Z"
+   },
+   {
+    "file": "sat/frame_004.jpg",
+    "time": "2026-10-15T13:20:00Z"
+   },
+   {
+    "file": "sat/frame_005.jpg",
+    "time": "2026-10-15T13:40:00Z"
+   },
+   {
+    "file": "sat/frame_006.jpg",
+    "time": "2026-10-15T14:00:00Z"
+   },
+   {
+    "file": "sat/frame_007.jpg",
+    "time": "2026-10-15T14:20:00Z"
+   },
+   {
+    "file": "sat/frame_008.jpg",
+    "time": "2026-10-15T15:00:00Z"
+   },
+   {
+    "file": "sat/frame_009.jpg",
+    "time": "2026-10-15T15:20:00Z"
+   },
+   {
+    "file": "sat/frame_010.jpg",
+    "time": "2026-10-15T15:40:00Z"
+   },
+   {
+    "file": "sat/frame_011.jpg",
+    "time": "2026-10-15T16:00:00Z"
+   },
+   {
+    "file": "sat/frame_012.jpg",
+    "time": "2026-10-15T16:20:00Z"
+   },
+   {
+    "file": "sat/frame_013.jpg",
+    "time": "2026-10-15T16:40:00Z"
+   },
+   {
+    "file": "sat/frame_014.jpg",
+    "time": "2026-10-15T17:00:00Z"
+   },
+   {
+    "file": "sat/frame_015.jpg",
+    "time": "2026-10-15T17:20:00Z"
+   },
+   {
+    "file": "sat/frame_016.jpg",
+    "time": "2026-10-15T17:40:00Z"
+   },
+   {
+    "file": "sat/frame_017.jpg",
+    "time": "2026-10-15T18:00:00Z"
+   },
+   {
+    "file": "sat/frame_018.jpg",
+    "time": "2026-10-15T18:20:00Z"
+   },
+   {
+    "file": "sat/frame_019.jpg",
+    "time": "2026-10-15T18:40:00Z"
+   },
+   {
+    "file": "sat/frame_020.jpg",
+    "time": "2026-10-15T19:00:00Z"
+   },
+   {
+    "file": "sat/frame_021.jpg",
+    "time": "2026-10-15T19:20:00Z"
+   },
+   {
+    "file": "sat/frame_022.jpg",
+    "time": "2026-10-15T19:40:00Z"
+   },
+   {
+    "file": "sat/frame_023.jpg",
+    "time": "2026-10-15T20:00:00Z"
+   },
+   {
+    "file": "sat/frame_024.jpg",
+    "time": "2026-10-15T20:20:00Z"
+   },
+   {
+    "file": "sat/frame_025.jpg",
+    "time": "2026-10-15T20:40:00Z"
+   },
+   {
+    "file": "sat/frame_026.jpg",
+    "time": "2026-10-15T21:00:00Z"
+   },
+   {
+    "file": "sat/frame_027.jpg",
+    "time": "2026-10-15T21:20:00Z"
+   },
+   {
+    "file": "sat/frame_028.jpg",
+    "time": "2026-10-15T21:40:00Z"
+   },
+   {
+    "file": "sat/frame_029.jpg",
+    "time": "2026-10-15T22:00:00Z"
+   },
+   {
+    "file": "sat/frame_030.jpg",
+    "time": "2026-10-15T22:20:00Z"
+   },
+   {
+    "file": "sat/frame_031.jpg",
+    "time": "2026-10-15T22:40:00Z"
+   },
+   {
+    "file": "sat/frame_032.jpg",
+    "time": "2026-10-15T23:00:00Z"
+   },
+   {
+    "file": "sat/frame_033.jpg",
+    "time": "2026-10-15T23:20:00Z"
+   },
+   {
+    "file": "sat/frame_034.jpg",
+    "time": "2026-10-15T23:40:00Z"
+   },
+   {
+    "file": "sat/frame_035.jpg",
+    "time": "2026-10-16T00:00:00Z"
+   },
+   {
+    "file": "sat/frame_036.jpg",
+    "time": "2026-10-16T00:20:00Z"
+   },
+   {
+    "file": "sat/frame_037.jpg",
+    "time": "2026-10-16T00:40:00Z"
+   },
+   {
+    "file": "sat/frame_038.jpg",
+    "time": "2026-10-16T01:00:00Z"
+   },
+   {
+    "file": "sat/frame_039.jpg",
+    "time": "2026-10-16T01:20:00Z"
+   },
+   {
+    "file": "sat/frame_040.jpg",
+    "time": "2026-10-16T01:40:00Z"
+   },
+   {
+    "file": "sat/frame_041.jpg",
+    "time": "2026-10-16T02:00:00Z"
+   },
+   {
+    "file": "sat/frame_042.jpg",
+    "time": "2026-10-16T02:20:00Z"
+   },
+   {
+    "file": "sat/frame_043.jpg",
+    "time": "2026-10-16T03:00:00Z"
+   },
+   {
+    "file": "sat/frame_044.jpg",
+    "time": "2026-10-16T03:20:00Z"
+   },
+   {
+    "file": "sat/frame_045.jpg",
+    "time": "2026-10-16T03:40:00Z"
+   },
+   {
+    "file": "sat/frame_046.jpg",
+    "time": "2026-10-16T04:00:00Z"
+   },
+   {
+    "file": "sat/frame_047.jpg",
+    "time": "2026-10-16T04:20:00Z"
+   },
+   {
+    "file": "sat/frame_048.jpg",
+    "time": "2026-10-16T04:40:00Z"
+   },
+   {
+    "file": "sat/frame_049.jpg",
+    "time": "2026-10-16T05:00:00Z"
+   },
+   {
+    "file": "sat/frame_050.jpg",
+    "time": "2026-10-16T05:20:00Z"
+   },
+   {
+    "file": "sat/frame_051.jpg",
+    "time": "2026-10-16T05:40:00Z"
+   },
+   {
+    "file": "sat/frame_052.jpg",
+    "time": "2026-10-16T06:00:00Z"
+   },
+   {
+    "file": "sat/frame_053.jpg",
+    "time": "2026-10-16T06:20:00Z"
+   },
+   {
+    "file": "sat/frame_054.jpg",
+    "time": "2026-10-16T06:40:00Z"
+   },
+   {
+    "file": "sat/frame_055.jpg",
+    "time": "2026-10-16T07:00:00Z"
+   },
+   {
+    "file": "sat/frame_056.jpg",
+    "time": "2026-10-16T07:20:00Z"
+   },
+   {
+    "file": "sat/frame_057.jpg",
+    "time": "2026-10-16T07:40:00Z"
+   },
+   {
+    "file": "sat/frame_058.jpg",
+    "time": "2026-10-16T08:00:00Z"
+   },
+   {
+    "file": "sat/frame_059.jpg",
+    "time": "2026-10-16T08:20:00Z"
+   },
+   {
+    "file": "sat/frame_060.jpg",
+    "time": "2026-10-16T08:40:00Z"
+   },
+   {
+    "file": "sat/frame_061.jpg",
+    "time": "2026-10-16T09:00:00Z"
+   },
+   {
+    "file": "sat/frame_062.jpg",
+    "time": "2026-10-16T09:20:00Z"
+   },
+   {
+    "file": "sat/frame_063.jpg",
+    "time": "2026-10-16T09:40:00Z"
+   },
+   {
+    "file": "sat/frame_064.jpg",
+    "time": "2026-10-16T10:00:00Z"
+   },
+   {
+    "file": "sat/frame_065.jpg",
+    "time": "2026-10-16T10:20:00Z"
+   },
+   {
+    "file": "sat/frame_066.jpg",
+    "time": "2026-10-16T10:40:00Z"
+   },
+   {
+    "file": "sat/frame_067.jpg",
+    "time": "2026-10-16T11:00:00Z"
+   },
+   {
+    "file": "sat/frame_068.jpg",
+    "time": "2026-10-16T11:20:00Z"
+   },
+   {
+    "file": "sat/frame_069.jpg",
+    "time": "2026-10-16T11:40:00Z"
+   },
+   {
+    "file": "sat/frame_070.jpg",
+    "time": "2026-10-16T12:00:00Z"
+   }
+  ]
+ },
+ "files": {
+  "gfs": {
+   "9": {
+    "sfc": {
+     "path": "gfs/sfc/f009.u16.gz",
+     "bytes": 155062,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98499.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 247.71,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -18.59,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -17.06,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 69895.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f009.u16.gz",
+     "bytes": 149103,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -125.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 252.72,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.84,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -16.73,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 4.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f009.u16.gz",
+     "bytes": 133015,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 513.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 249.43,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.34,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.09,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 4.9,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f009.u16.gz",
+     "bytes": 134572,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1192.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 251.19,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.73,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.11,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f009.u16.gz",
+     "bytes": 149605,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2705.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.0,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.05,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.07,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f009.u16.gz",
+     "bytes": 135619,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5176.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.56,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.1,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -28.78,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f009.u16.gz",
+     "bytes": 142356,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8650.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 214.3,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -32.69,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -37.34,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f009.u16.gz",
+     "bytes": 139691,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9849.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 209.66,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -33.49,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -32.1,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "6": {
+    "sfc": {
+     "path": "gfs/sfc/f006.u16.gz",
+     "bytes": 154898,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98307.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 247.84,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -19.09,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -17.54,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 69758.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f006.u16.gz",
+     "bytes": 149195,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -142.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.0,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.56,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.29,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 6.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f006.u16.gz",
+     "bytes": 132899,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 501.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 249.71,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.71,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -24.56,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 6.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f006.u16.gz",
+     "bytes": 134566,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1182.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 251.54,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.13,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.51,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f006.u16.gz",
+     "bytes": 149856,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2694.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.97,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.29,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.65,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f006.u16.gz",
+     "bytes": 135936,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5167.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.82,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.24,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -24.69,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f006.u16.gz",
+     "bytes": 142678,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8647.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 214.99,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -33.92,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -34.83,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f006.u16.gz",
+     "bytes": 141879,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9844.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 209.45,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -33.93,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -30.99,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.1,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "0": {
+    "sfc": {
+     "path": "gfs/sfc/f000.u16.gz",
+     "bytes": 165984,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 97959.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 249.03,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -19.55,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -17.14,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 69837.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f000.u16.gz",
+     "bytes": 148918,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -172.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.95,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.93,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.18,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 13.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f000.u16.gz",
+     "bytes": 130753,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 473.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 251.21,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.34,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.3,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 5.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f000.u16.gz",
+     "bytes": 150840,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1162.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 252.02,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.92,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.68,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f000.u16.gz",
+     "bytes": 150890,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2679.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.93,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.78,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.04,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f000.u16.gz",
+     "bytes": 134780,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5157.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.14,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -28.83,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -27.19,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f000.u16.gz",
+     "bytes": 141591,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8650.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 216.38,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -35.43,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -42.61,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f000.u16.gz",
+     "bytes": 142908,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9850.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.08,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -39.34,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -38.33,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "3": {
+    "sfc": {
+     "path": "gfs/sfc/f003.u16.gz",
+     "bytes": 165884,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98088.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 248.23,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -17.57,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -17.89,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 69692.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f003.u16.gz",
+     "bytes": 148846,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -161.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.94,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.29,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.34,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 11.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f003.u16.gz",
+     "bytes": 132684,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 483.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 250.2,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.15,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.9,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 6.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f003.u16.gz",
+     "bytes": 134569,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1171.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 251.81,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -29.63,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.95,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f003.u16.gz",
+     "bytes": 150172,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2684.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.24,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.56,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.9,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f003.u16.gz",
+     "bytes": 136308,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5159.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.88,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.6,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.96,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f003.u16.gz",
+     "bytes": 142680,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8648.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 216.02,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -36.36,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -38.17,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f003.u16.gz",
+     "bytes": 142341,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9843.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.85,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -38.53,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -36.02,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.8,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "12": {
+    "sfc": {
+     "path": "gfs/sfc/f012.u16.gz",
+     "bytes": 154328,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98534.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 252.19,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -16.94,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.53,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70033.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f012.u16.gz",
+     "bytes": 148509,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -124.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.2,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.0,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.9,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 5.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f012.u16.gz",
+     "bytes": 132252,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 521.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.41,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.43,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.53,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 5.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f012.u16.gz",
+     "bytes": 132293,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1206.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.66,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.0,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.25,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f012.u16.gz",
+     "bytes": 129933,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2719.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.62,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.97,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.47,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f012.u16.gz",
+     "bytes": 133134,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5188.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.57,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.14,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -32.82,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f012.u16.gz",
+     "bytes": 141944,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8655.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.96,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -30.41,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -42.57,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f012.u16.gz",
+     "bytes": 139142,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9854.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.31,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -29.44,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -38.94,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "15": {
+    "sfc": {
+     "path": "gfs/sfc/f015.u16.gz",
+     "bytes": 154077,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98545.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 254.7,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -16.31,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.66,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70069.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f015.u16.gz",
+     "bytes": 148155,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -123.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 260.18,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.4,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.18,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 9.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f015.u16.gz",
+     "bytes": 130076,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 518.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.48,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.78,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.62,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 7.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f015.u16.gz",
+     "bytes": 133513,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1200.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.04,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.18,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.41,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f015.u16.gz",
+     "bytes": 129123,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2722.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.96,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.97,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -27.41,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f015.u16.gz",
+     "bytes": 132712,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5195.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.58,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.12,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -35.0,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f015.u16.gz",
+     "bytes": 140201,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8656.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 212.63,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -28.78,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -45.79,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f015.u16.gz",
+     "bytes": 138809,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9856.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.75,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.6,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -55.79,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.2,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "18": {
+    "sfc": {
+     "path": "gfs/sfc/f018.u16.gz",
+     "bytes": 165538,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98538.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 248.98,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.96,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -16.12,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70073.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f018.u16.gz",
+     "bytes": 148104,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -121.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.74,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.24,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.24,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 10.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f018.u16.gz",
+     "bytes": 131863,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 512.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 251.79,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.13,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.14,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f018.u16.gz",
+     "bytes": 131306,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1193.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.52,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.09,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.56,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f018.u16.gz",
+     "bytes": 128483,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2732.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.42,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.64,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.56,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f018.u16.gz",
+     "bytes": 150246,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5205.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.5,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.25,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -36.22,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f018.u16.gz",
+     "bytes": 141771,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8658.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.14,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.35,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -51.5,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f018.u16.gz",
+     "bytes": 140126,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9860.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.81,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.96,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -56.29,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.0,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "21": {
+    "sfc": {
+     "path": "gfs/sfc/f021.u16.gz",
+     "bytes": 165525,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98529.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 247.66,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.12,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -16.01,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70115.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f021.u16.gz",
+     "bytes": 148421,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -121.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 252.91,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.77,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.72,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 11.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f021.u16.gz",
+     "bytes": 130022,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 510.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 249.85,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.03,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.08,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 11.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f021.u16.gz",
+     "bytes": 133220,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1187.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.01,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.28,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.38,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f021.u16.gz",
+     "bytes": 128253,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2723.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.74,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.89,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.64,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f021.u16.gz",
+     "bytes": 131848,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5217.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.29,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.87,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -37.13,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f021.u16.gz",
+     "bytes": 140500,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8662.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.4,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.97,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -54.8,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f021.u16.gz",
+     "bytes": 138944,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9865.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.42,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.33,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -60.11,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.1,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "24": {
+    "sfc": {
+     "path": "gfs/sfc/f024.u16.gz",
+     "bytes": 165637,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98488.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 247.11,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.08,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.59,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70151.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f024.u16.gz",
+     "bytes": 148513,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -125.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 252.11,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.56,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.73,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 13.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f024.u16.gz",
+     "bytes": 129908,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 506.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 248.4,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.06,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.97,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 9.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f024.u16.gz",
+     "bytes": 133199,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1182.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.03,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.33,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.14,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f024.u16.gz",
+     "bytes": 129455,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2718.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.33,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.12,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.82,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f024.u16.gz",
+     "bytes": 133659,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5219.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.14,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.23,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -39.66,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f024.u16.gz",
+     "bytes": 140239,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8662.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.57,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.87,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -59.64,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f024.u16.gz",
+     "bytes": 140397,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9868.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.11,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.65,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -72.08,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.1,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "27": {
+    "sfc": {
+     "path": "gfs/sfc/f027.u16.gz",
+     "bytes": 154686,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98496.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 245.33,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.46,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.4,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70196.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f027.u16.gz",
+     "bytes": 148549,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -124.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 250.13,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -15.43,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.17,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 13.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f027.u16.gz",
+     "bytes": 131558,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 506.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 246.6,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.94,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.19,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 12.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f027.u16.gz",
+     "bytes": 131050,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1182.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.34,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.85,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.52,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f027.u16.gz",
+     "bytes": 128750,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2714.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.62,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.36,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.57,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f027.u16.gz",
+     "bytes": 133561,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5218.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 239.05,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.3,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -42.27,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f027.u16.gz",
+     "bytes": 140422,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8661.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.47,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.37,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -69.33,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f027.u16.gz",
+     "bytes": 140214,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9864.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.09,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -17.63,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -74.48,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.3,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "30": {
+    "sfc": {
+     "path": "gfs/sfc/f030.u16.gz",
+     "bytes": 155139,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98607.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 246.73,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -17.03,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.98,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70277.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f030.u16.gz",
+     "bytes": 148906,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -114.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 251.13,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -17.62,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.77,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 9.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f030.u16.gz",
+     "bytes": 129912,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 514.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 247.64,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.19,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.62,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 9.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f030.u16.gz",
+     "bytes": 132890,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1188.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.87,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.88,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.65,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f030.u16.gz",
+     "bytes": 127478,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2717.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.8,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.9,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.78,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f030.u16.gz",
+     "bytes": 133394,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5221.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 238.91,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.71,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -38.57,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f030.u16.gz",
+     "bytes": 140340,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8661.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 212.98,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -28.04,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -71.05,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f030.u16.gz",
+     "bytes": 139213,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9859.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.35,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -14.14,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -74.88,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.6,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "33": {
+    "sfc": {
+     "path": "gfs/sfc/f033.u16.gz",
+     "bytes": 154956,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98829.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 248.13,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.12,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.39,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70356.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f033.u16.gz",
+     "bytes": 148922,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -96.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 252.21,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.59,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.92,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f033.u16.gz",
+     "bytes": 129805,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 531.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 249.46,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.33,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.04,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f033.u16.gz",
+     "bytes": 130792,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1201.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.58,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.41,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.74,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 3.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f033.u16.gz",
+     "bytes": 128634,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2720.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.83,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.98,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -25.1,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f033.u16.gz",
+     "bytes": 133538,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5228.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 238.78,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.35,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -39.29,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f033.u16.gz",
+     "bytes": 140481,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8667.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.23,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.96,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -65.64,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f033.u16.gz",
+     "bytes": 139441,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9856.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.48,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.63,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -69.25,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.7,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "36": {
+    "sfc": {
+     "path": "gfs/sfc/f036.u16.gz",
+     "bytes": 154198,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98993.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 254.42,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -16.65,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.43,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70409.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f036.u16.gz",
+     "bytes": 147951,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -82.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 258.89,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.27,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.11,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f036.u16.gz",
+     "bytes": 129314,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 543.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.08,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.27,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.49,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 7.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f036.u16.gz",
+     "bytes": 132372,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1209.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.04,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.18,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.28,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.7,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f036.u16.gz",
+     "bytes": 127328,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2717.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.74,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.52,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -24.49,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f036.u16.gz",
+     "bytes": 150373,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5229.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 238.98,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.24,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -37.27,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f036.u16.gz",
+     "bytes": 140527,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8672.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 214.18,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.06,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -61.28,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f036.u16.gz",
+     "bytes": 140807,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9856.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.38,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.91,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -75.7,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.8,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "39": {
+    "sfc": {
+     "path": "gfs/sfc/f039.u16.gz",
+     "bytes": 154237,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 99012.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 255.89,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -16.84,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -16.54,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70464.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f039.u16.gz",
+     "bytes": 147740,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -81.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 259.37,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -18.47,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.17,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 11.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f039.u16.gz",
+     "bytes": 130719,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 543.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.69,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.37,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.22,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f039.u16.gz",
+     "bytes": 129758,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1208.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.46,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.62,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.79,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 3.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f039.u16.gz",
+     "bytes": 127892,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2713.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.76,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.45,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -25.21,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f039.u16.gz",
+     "bytes": 150249,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5225.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 238.76,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.74,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -37.95,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f039.u16.gz",
+     "bytes": 140802,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8669.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 214.94,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.9,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -64.38,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f039.u16.gz",
+     "bytes": 140661,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9851.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.46,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.47,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -76.77,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.0,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "42": {
+    "sfc": {
+     "path": "gfs/sfc/f042.u16.gz",
+     "bytes": 154480,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 99032.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 251.39,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -16.91,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -17.9,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 70501.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "gfs/p1000/f042.u16.gz",
+     "bytes": 147861,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -79.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.63,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -18.06,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.24,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 14.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "gfs/p925/f042.u16.gz",
+     "bytes": 128575,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 544.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 253.02,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.67,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.64,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "gfs/p850/f042.u16.gz",
+     "bytes": 129826,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1208.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.3,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.53,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.34,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 3.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "gfs/p700/f042.u16.gz",
+     "bytes": 146841,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2709.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.05,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.11,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -24.03,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "gfs/p500/f042.u16.gz",
+     "bytes": 150370,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5213.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 238.51,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.64,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -39.09,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "gfs/p300/f042.u16.gz",
+     "bytes": 141919,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8675.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 215.67,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.16,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -63.24,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "gfs/p250/f042.u16.gz",
+     "bytes": 139992,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9853.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.18,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -17.96,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -72.97,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.0,
+       "res": 0.1
+      }
+     ]
+    }
+   }
+  },
+  "ecmwf": {
+   "3": {
+    "sfc": {
+     "path": "ecmwf/sfc/f003.u16.gz",
+     "bytes": 139870,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98147.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 247.01,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -14.99,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.52,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67098.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f003.u16.gz",
+     "bytes": 134101,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -154.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 261.99,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -17.34,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -15.75,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 15.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f003.u16.gz",
+     "bytes": 131001,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 487.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 258.63,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.29,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.93,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f003.u16.gz",
+     "bytes": 133574,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1171.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.33,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.98,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.19,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f003.u16.gz",
+     "bytes": 132899,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2689.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.91,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.3,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.21,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f003.u16.gz",
+     "bytes": 138537,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5173.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.37,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -26.24,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.68,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f003.u16.gz",
+     "bytes": 133065,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8659.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 216.52,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -34.86,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -36.72,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f003.u16.gz",
+     "bytes": 136877,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9841.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.3,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -37.37,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -34.91,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "0": {
+    "sfc": {
+     "path": "ecmwf/sfc/f000.u16.gz",
+     "bytes": 139774,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 97998.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 249.36,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.65,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -15.69,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67220.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f000.u16.gz",
+     "bytes": 134211,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -166.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 263.14,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -18.37,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -15.64,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 16.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f000.u16.gz",
+     "bytes": 131530,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 477.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 259.5,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.69,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.01,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.9,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f000.u16.gz",
+     "bytes": 133826,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1161.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.39,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.86,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.23,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f000.u16.gz",
+     "bytes": 133166,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2682.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.18,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.09,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.44,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f000.u16.gz",
+     "bytes": 139133,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5167.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.75,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -28.1,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -25.95,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f000.u16.gz",
+     "bytes": 137959,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8663.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 216.8,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -37.12,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -41.62,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -1.7,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f000.u16.gz",
+     "bytes": 137626,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9852.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.15,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -39.12,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -39.72,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.9,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "6": {
+    "sfc": {
+     "path": "ecmwf/sfc/f006.u16.gz",
+     "bytes": 140013,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98344.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 246.04,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -13.94,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.97,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67092.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f006.u16.gz",
+     "bytes": 134291,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -137.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 261.26,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -15.58,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -14.83,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 8.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f006.u16.gz",
+     "bytes": 130797,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 505.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 258.21,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -19.6,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -21.13,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 3.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f006.u16.gz",
+     "bytes": 133324,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1186.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.98,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.96,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.13,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f006.u16.gz",
+     "bytes": 128091,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2698.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.6,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.9,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.48,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.9,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f006.u16.gz",
+     "bytes": 138099,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5178.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.23,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.11,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -25.83,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f006.u16.gz",
+     "bytes": 132780,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8661.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 215.45,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -33.2,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -33.23,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f006.u16.gz",
+     "bytes": 136468,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9839.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 209.88,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -32.5,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -31.01,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "12": {
+    "sfc": {
+     "path": "ecmwf/sfc/f012.u16.gz",
+     "bytes": 139117,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98284.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 253.22,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -14.37,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.83,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67265.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f012.u16.gz",
+     "bytes": 133772,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -132.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 259.57,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.59,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -15.11,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 6.2,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f012.u16.gz",
+     "bytes": 130301,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 513.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.64,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.93,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.25,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f012.u16.gz",
+     "bytes": 132759,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1202.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.19,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.11,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.21,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f012.u16.gz",
+     "bytes": 131234,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2713.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.1,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.13,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -22.94,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -1.7,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f012.u16.gz",
+     "bytes": 137218,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5194.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.18,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.6,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -30.39,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f012.u16.gz",
+     "bytes": 132531,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8667.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.8,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -29.33,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -40.4,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f012.u16.gz",
+     "bytes": 131077,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9846.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 210.94,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.67,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -37.75,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.4,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "15": {
+    "sfc": {
+     "path": "ecmwf/sfc/f015.u16.gz",
+     "bytes": 138749,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98388.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 255.38,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.45,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.81,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67267.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f015.u16.gz",
+     "bytes": 133268,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -131.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 263.33,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.2,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -15.12,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 11.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f015.u16.gz",
+     "bytes": 129939,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 516.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 259.74,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.19,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.54,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 2.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f015.u16.gz",
+     "bytes": 132339,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1208.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.38,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.62,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.75,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f015.u16.gz",
+     "bytes": 130546,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2724.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.94,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.82,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -26.6,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f015.u16.gz",
+     "bytes": 136704,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5202.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.35,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.26,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -33.82,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f015.u16.gz",
+     "bytes": 131994,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8672.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.51,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.31,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -41.4,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.8,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f015.u16.gz",
+     "bytes": 138523,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9849.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.18,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -27.2,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -49.89,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.1,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "21": {
+    "sfc": {
+     "path": "ecmwf/sfc/f021.u16.gz",
+     "bytes": 139249,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98664.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 250.22,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -16.1,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.17,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67268.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f021.u16.gz",
+     "bytes": 133295,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -111.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 262.72,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.64,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -16.79,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 14.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f021.u16.gz",
+     "bytes": 129874,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 521.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 258.23,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.84,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.25,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 5.9,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f021.u16.gz",
+     "bytes": 131693,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1204.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.88,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -20.79,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -20.3,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.3,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f021.u16.gz",
+     "bytes": 129915,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2741.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.47,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.65,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.41,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f021.u16.gz",
+     "bytes": 136128,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5222.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.03,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.35,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -36.84,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -1.9,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f021.u16.gz",
+     "bytes": 137425,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8681.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.07,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.54,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -54.43,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f021.u16.gz",
+     "bytes": 134648,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9859.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.25,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.52,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -54.1,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.4,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "18": {
+    "sfc": {
+     "path": "ecmwf/sfc/f018.u16.gz",
+     "bytes": 138848,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98555.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 253.31,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.95,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.83,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67276.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f018.u16.gz",
+     "bytes": 132840,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -119.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 263.55,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.02,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -15.23,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 11.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f018.u16.gz",
+     "bytes": 129350,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 520.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 259.75,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.37,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -18.64,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f018.u16.gz",
+     "bytes": 131871,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1208.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.35,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.91,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.55,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f018.u16.gz",
+     "bytes": 129949,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2735.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 255.2,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.04,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.49,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f018.u16.gz",
+     "bytes": 136448,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5212.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.26,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.08,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -35.09,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -1.0,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f018.u16.gz",
+     "bytes": 132435,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8676.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.24,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -25.0,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -51.65,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.4,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f018.u16.gz",
+     "bytes": 134432,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9856.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.26,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -24.77,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -54.49,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.3,
+       "res": 0.1
+      }
+     ]
+    }
+   },
+   "27": {
+    "sfc": {
+     "path": "ecmwf/sfc/f027.u16.gz",
+     "bytes": 137023,
+     "fields": [
+      {
+       "name": "mslp",
+       "offset": 98702.0,
+       "res": 1.0
+      },
+      {
+       "name": "t2m",
+       "offset": 250.44,
+       "res": 0.01
+      },
+      {
+       "name": "u10",
+       "offset": -15.1,
+       "res": 0.01
+      },
+      {
+       "name": "v10",
+       "offset": -14.16,
+       "res": 0.01
+      },
+      {
+       "name": "psfc",
+       "offset": 67297.0,
+       "res": 1.0
+      }
+     ]
+    },
+    "p1000": {
+     "path": "ecmwf/p1000/f027.u16.gz",
+     "bytes": 133124,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": -107.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 261.93,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.85,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -17.65,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 14.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p925": {
+     "path": "ecmwf/p925/f027.u16.gz",
+     "bytes": 129637,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 523.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 256.43,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -21.98,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.04,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 4.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p850": {
+     "path": "ecmwf/p850/f027.u16.gz",
+     "bytes": 131487,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 1200.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 257.63,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.94,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -19.51,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.9,
+       "res": 0.1
+      }
+     ]
+    },
+    "p700": {
+     "path": "ecmwf/p700/f027.u16.gz",
+     "bytes": 129108,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 2735.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 254.08,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.49,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -23.1,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 0.6,
+       "res": 0.1
+      }
+     ]
+    },
+    "p500": {
+     "path": "ecmwf/p500/f027.u16.gz",
+     "bytes": 136211,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 5224.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 240.02,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -22.12,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -42.11,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -3.1,
+       "res": 0.1
+      }
+     ]
+    },
+    "p300": {
+     "path": "ecmwf/p300/f027.u16.gz",
+     "bytes": 132427,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 8671.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 213.36,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -23.42,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -61.85,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": -0.5,
+       "res": 0.1
+      }
+     ]
+    },
+    "p250": {
+     "path": "ecmwf/p250/f027.u16.gz",
+     "bytes": 130949,
+     "fields": [
+      {
+       "name": "gh",
+       "offset": 9866.0,
+       "res": 1.0
+      },
+      {
+       "name": "t",
+       "offset": 211.37,
+       "res": 0.01
+      },
+      {
+       "name": "u",
+       "offset": -16.44,
+       "res": 0.01
+      },
+      {
+       "name": "v",
+       "offset": -62.67,
+       "res": 0.01
+      },
+      {
+       "name": "r",
+       "offset": 1.5,
+       "res": 0.1
+      }
+     ]
+    }
+   }
+  }
+ },
+ "sources": {
+  "gfs": {
+   "9": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 9
+   },
+   "6": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 6
+   },
+   "0": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 0
+   },
+   "3": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 3
+   },
+   "12": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 12
+   },
+   "15": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 15
+   },
+   "18": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 18
+   },
+   "21": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 21
+   },
+   "24": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 24
+   },
+   "27": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 27
+   },
+   "30": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 30
+   },
+   "33": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 33
+   },
+   "36": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 36
+   },
+   "39": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 39
+   },
+   "42": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 42
+   }
+  },
+  "ecmwf": {
+   "3": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 3
+   },
+   "0": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 0
+   },
+   "6": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 6
+   },
+   "12": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 12
+   },
+   "15": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 15
+   },
+   "21": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 21
+   },
+   "18": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 18
+   },
+   "27": {
+    "cycle": "2026-10-16T12:00:00Z",
+    "lead_h": 27
+   }
+  }
+ },
+ "missing": [
+  {
+   "model": "ecmwf",
+   "lead_h": -24,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -21,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -18,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -15,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -12,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -9,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -6,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": -3,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 9,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 24,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 30,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 33,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 36,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 39,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 42,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 45,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 48,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 51,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 54,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 57,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 60,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 63,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 66,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 69,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 72,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 75,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 78,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 81,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 84,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 87,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 90,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 93,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "ecmwf",
+   "lead_h": 96,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -24,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -21,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -18,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -15,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -12,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -9,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -6,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": -3,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 45,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 48,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 51,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 54,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 57,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 60,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 63,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 66,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 69,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 72,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 75,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 78,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 81,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 84,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 87,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 90,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 93,
+   "reason": "not attempted (time budget)"
+  },
+  {
+   "model": "gfs",
+   "lead_h": 96,
+   "reason": "not attempted (time budget)"
+  }
+ ]
+}
